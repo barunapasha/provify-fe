@@ -65,6 +65,8 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
   const { donations, isLoading: isDonationsLoading } = useDonations(campaignId);
   const { submitProof, requestDisbursement, closeCampaign, isLoading: isActionLoading } = useManageCampaign();
 
+  const now = Date.now();
+
   // Dialog states
   const [proofDialogOpen, setProofDialogOpen] = useState(false);
   const [activeMilestoneIdx, setActiveMilestoneIdx] = useState<number | null>(null);
@@ -107,7 +109,7 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
   // Calculate released amount
   const releasedSol = campaign.milestones
     ? campaign.milestones.reduce(
-        (acc, curr) => acc + (curr.status.released ? parseFloat(curr.targetAmount) : 0),
+        (acc, curr) => acc + ("released" in curr.status ? parseFloat(curr.targetAmount) : 0),
         0
       ) / LAMPORTS_PER_SOL
     : 0;
@@ -115,7 +117,7 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
   const escrowSol = Math.max(0, currentSol - releasedSol);
 
   const deadlineDate = new Date(parseInt(campaign.deadline) * 1000);
-  const daysLeft = Math.max(0, Math.ceil((deadlineDate.getTime() - Date.now()) / (1000 * 3600 * 24)));
+  const daysLeft = Math.max(0, Math.ceil((deadlineDate.getTime() - now) / (1000 * 3600 * 24)));
 
   // Milestone Actions Handlers
   const handleOpenProofDialog = (index: number) => {
@@ -305,7 +307,7 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
                         mb: 2,
                         borderRadius: 3,
                         borderColor: "divider",
-                        backgroundColor: m.status.released
+                        backgroundColor: "released" in m.status
                           ? "rgba(0, 240, 181, 0.02)"
                           : "background.paper",
                       }}
@@ -336,19 +338,19 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
                             <Typography variant="caption" color="text.secondary" sx={{ display: "block", fontWeight: 700 }}>
                               STATUS
                             </Typography>
-                            {m.status.pending && (
+                            {"pending" in m.status && (
                               <Chip label={t("pending")} color="warning" size="small" sx={{ borderRadius: 1, fontWeight: 700 }} />
                             )}
-                            {m.status.proofSubmitted && (
+                            {"proofSubmitted" in m.status && (
                               <Chip label={t("proofSubmitted")} color="info" size="small" sx={{ borderRadius: 1, fontWeight: 700 }} />
                             )}
-                            {m.status.released && (
+                            {"released" in m.status && (
                               <Chip label={t("released")} color="success" size="small" sx={{ borderRadius: 1, fontWeight: 700 }} />
                             )}
                           </Box>
 
                           {/* Action Buttons based on status */}
-                          {m.status.pending && (
+                          {"pending" in m.status && (
                             <Button
                               variant="outlined"
                               size="small"
@@ -359,7 +361,7 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
                             </Button>
                           )}
 
-                          {m.status.proofSubmitted && (
+                          {"proofSubmitted" in m.status && (
                             <Button
                               variant="contained"
                               color="primary"
@@ -371,7 +373,7 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
                             </Button>
                           )}
 
-                          {m.status.released && (
+                          {"released" in m.status && (
                             <Stack direction="row" spacing={0.5} sx={{ alignItems: "center", justifyContent: { xs: "flex-start", sm: "flex-end" } }}>
                               <CheckCircleIcon color="success" fontSize="small" />
                               <Typography variant="body2" color="success.main" sx={{ fontWeight: 700 }}>

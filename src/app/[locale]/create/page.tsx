@@ -29,8 +29,8 @@ import {
   Stack,
   Chip,
 } from "@mui/material";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutlined";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutlined";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ErrorIcon from "@mui/icons-material/Error";
@@ -284,7 +284,7 @@ function CreateCampaignForm() {
                 onChange={(e) => setTitle(e.target.value)}
                 error={!!errors.title}
                 helperText={errors.title || `${title.length}/100`}
-                inputProps={{ maxLength: 100 }}
+                slotProps={{ htmlInput: { maxLength: 100 } }}
               />
 
               <TextField
@@ -297,7 +297,7 @@ function CreateCampaignForm() {
                 onChange={(e) => setDescription(e.target.value)}
                 error={!!errors.description}
                 helperText={errors.description || `${description.length}/500`}
-                inputProps={{ maxLength: 500 }}
+                slotProps={{ htmlInput: { maxLength: 500 } }}
               />
 
               <Grid container spacing={3}>
@@ -439,7 +439,7 @@ function CreateCampaignForm() {
                           onChange={(e) => handleMilestoneChange(idx, "title", e.target.value)}
                           error={!!errors[`m-title-${idx}`]}
                           helperText={errors[`m-title-${idx}`]}
-                          inputProps={{ maxLength: 100 }}
+                          slotProps={{ htmlInput: { maxLength: 100 } }}
                         />
                       </Grid>
                       <Grid size={{ xs: 12, sm: 4 }}>
