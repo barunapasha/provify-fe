@@ -18,7 +18,7 @@ import {
   Chip,
   Skeleton,
 } from "@mui/material";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useCampaign } from "@/hooks/useCampaign";
 import { useDonations } from "@/hooks/useDonations";

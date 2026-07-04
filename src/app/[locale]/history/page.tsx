@@ -15,7 +15,7 @@ import {
   IconButton,
   Skeleton,
 } from "@mui/material";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { useWalletDonations } from "@/hooks/useWalletDonations";

@@ -17,9 +17,8 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
-import Link from "next/link";
+import { Link, usePathname } from "@/i18n/routing";
 import ConnectButton from "../wallet/ConnectButton";
-import { usePathname } from "next/navigation";
 
 const navItems = [
   { label: "Campaigns", path: "/campaigns" },

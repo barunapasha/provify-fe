@@ -1,7 +1,7 @@
 "use client";
 
 import { Box, Container, Typography, Chip, Link as MuiLink } from "@mui/material";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 
 export default function Footer() {
   return (

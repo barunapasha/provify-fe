@@ -13,7 +13,7 @@ import {
   CircularProgress,
   Stack,
 } from "@mui/material";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { useCampaign } from "@/hooks/useCampaign";

@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardMedia, Typography, Box, Chip } from "@mui/material";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import ProgressBar from "./ProgressBar";
 import StatusBadge from "./StatusBadge";
 import { Campaign } from "@/types/campaign";

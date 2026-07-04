@@ -15,7 +15,7 @@ import {
   Skeleton,
   Stack,
 } from "@mui/material";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import useSWR from "swr";
 import { useTranslations } from "next-intl";
 import CampaignCard from "@/components/ui/CampaignCard";
