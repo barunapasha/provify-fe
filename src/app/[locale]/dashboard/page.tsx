@@ -43,7 +43,6 @@ function DashboardContent() {
   // eslint-disable-next-line react-hooks/purity
   const now = Date.now();
 
-  // Compute stats
   const totalCampaigns = campaigns.length;
   const totalRaisedLamports = campaigns.reduce(
     (acc, curr) => acc + (parseFloat(curr.currentAmount) || 0),
@@ -55,7 +54,6 @@ function DashboardContent() {
 
   return (
     <Container maxWidth="lg" sx={{ py: 6 }}>
-      {/* Header */}
       <Box sx={{ mb: 6 }}>
         <Typography
           variant="h1"
@@ -74,7 +72,6 @@ function DashboardContent() {
         </Typography>
       </Box>
 
-      {/* Stats row */}
       <Grid container spacing={3} sx={{ mb: 6 }}>
         <Grid size={{ xs: 12, sm: 4 }}>
           <Card variant="outlined" sx={{ borderRadius: 3, borderColor: "divider" }}>
@@ -176,7 +173,6 @@ function DashboardContent() {
         </Grid>
       </Grid>
 
-      {/* Campaign List */}
       {isLoading ? (
         <Grid container spacing={3}>
           {[1, 2].map((i) => (
@@ -265,7 +261,6 @@ function DashboardContent() {
                       </Box>
                     </Box>
 
-                    {/* Action buttons */}
                     <Stack direction="row" spacing={1.5} sx={{ mt: "auto" }}>
                       <Link href={`/dashboard/${campaign.pubkey}`} passHref style={{ textDecoration: "none", flexGrow: 1 }}>
                         <Button

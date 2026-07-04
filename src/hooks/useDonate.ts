@@ -55,7 +55,6 @@ export function useDonate(campaignId: string, currentDonationCount: string) {
         })
         .rpc();
 
-      // Wait for confirmation
       const latestBlockhash = await connection.getLatestBlockhash();
       await connection.confirmTransaction(
         {

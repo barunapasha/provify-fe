@@ -27,6 +27,8 @@ import {
   DialogActions,
   TextField,
   CircularProgress,
+  Link as MuiLink,
+  Chip,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
@@ -67,7 +69,6 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
 
   const now = Date.now();
 
-  // Dialog states
   const [proofDialogOpen, setProofDialogOpen] = useState(false);
   const [activeMilestoneIdx, setActiveMilestoneIdx] = useState<number | null>(null);
   const [proofUri, setProofUri] = useState("");
@@ -106,7 +107,6 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
   const currentSol = parseFloat(campaign.currentAmount) / LAMPORTS_PER_SOL;
   const targetSol = parseFloat(campaign.targetAmount) / LAMPORTS_PER_SOL;
 
-  // Calculate released amount
   const releasedSol = campaign.milestones
     ? campaign.milestones.reduce(
         (acc, curr) => acc + ("released" in curr.status ? parseFloat(curr.targetAmount) : 0),
@@ -677,6 +677,3 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
     </Container>
   );
 }
-
-// Custom Material UI Link style override
-import { Link as MuiLink, Chip } from "@mui/material";

@@ -68,9 +68,7 @@ function DonateForm({ id }: { id: string }) {
     try {
       await donate(numAmount);
       setAmount("");
-    } catch {
-      // error surfaced via hook state
-    }
+    } catch {}
   };
 
   if (isLoading) {
@@ -105,7 +103,6 @@ function DonateForm({ id }: { id: string }) {
       </Container>
 
       <Container maxWidth="md">
-        {/* Campaign summary (read-only) */}
         <Paper variant="outlined" sx={{ p: 4, borderRadius: 3, borderColor: "divider", mb: 4 }}>
           <Typography variant="overline" color="text.secondary">
             {t("donatingTo")}
@@ -119,7 +116,6 @@ function DonateForm({ id }: { id: string }) {
           </Typography>
         </Paper>
 
-        {/* Donation form or success state */}
         {txHash ? (
           <Paper variant="outlined" sx={{ p: 5, borderRadius: 3, borderColor: "divider", textAlign: "center" }}>
             <Alert severity="success" sx={{ mb: 3, justifyContent: "center" }}>
@@ -171,7 +167,6 @@ function DonateForm({ id }: { id: string }) {
               }}
             />
 
-            {/* Transaction preview */}
             <Box sx={{ mt: 3, p: 2, backgroundColor: "#F9FAFC", borderRadius: 2 }}>
               <PreviewRow label={t("amount")} value={`${numAmount || 0} SOL`} />
               <PreviewRow label={t("networkFee")} value="~0.000005 SOL" muted />

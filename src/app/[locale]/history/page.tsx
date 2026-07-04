@@ -39,7 +39,6 @@ function HistoryContent() {
 
   return (
     <Container maxWidth="lg" sx={{ py: 6 }}>
-      {/* Header */}
       <Box sx={{ mb: 5 }}>
         <Typography variant="h2" sx={{ fontSize: "2.4rem", mb: 1 }}>
           {t("title")}
@@ -51,7 +50,6 @@ function HistoryContent() {
         )}
       </Box>
 
-      {/* Table or empty state */}
       {isLoading ? (
         <Skeleton variant="rectangular" height={300} sx={{ borderRadius: 2 }} />
       ) : donations.length === 0 ? (

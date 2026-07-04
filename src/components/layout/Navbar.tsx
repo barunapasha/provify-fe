@@ -52,7 +52,6 @@ export default function Navbar() {
     >
       <Container maxWidth="lg">
         <Toolbar disableGutters sx={{ justifyContent: "space-between", height: 70 }}>
-          {/* Logo */}
           <Link href="/" passHref style={{ textDecoration: "none" }}>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <Typography
@@ -77,7 +76,6 @@ export default function Navbar() {
             </Box>
           </Link>
 
-          {/* Desktop Nav */}
           <Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center", gap: 3 }}>
             {navItems.map((item) => (
               <Link key={item.path} href={item.path} passHref style={{ textDecoration: "none" }}>
@@ -106,7 +104,6 @@ export default function Navbar() {
             ))}
           </Box>
 
-          {/* Action Area */}
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <ConnectButton />
             <IconButton
@@ -122,7 +119,6 @@ export default function Navbar() {
         </Toolbar>
       </Container>
 
-      {/* Mobile Drawer */}
       <Drawer
         anchor="right"
         open={mobileOpen}

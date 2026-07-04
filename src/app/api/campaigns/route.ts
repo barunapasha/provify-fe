@@ -10,10 +10,7 @@ const PROGRAM_ID = new PublicKey(
 
 const coder = new BorshAccountsCoder(IDL as never);
 
-// Campaign account 8-byte discriminator (from IDL), pre-encoded to base58.
-// Filters RPC to return only Campaign accounts, skipping Milestone/Donation
-// accounts so decoding never throws "Invalid account discriminator".
-// (Discriminator bytes [50,40,49,11,157,220,229,192] -> base58 "9PayLifPYdD")
+// Pre-encoded Campaign discriminator base58 bytes
 const CAMPAIGN_DISCRIMINATOR = "9PayLifPYdD";
 
 export async function GET() {

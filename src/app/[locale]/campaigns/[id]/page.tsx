@@ -79,7 +79,6 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
 
   return (
     <Box sx={{ pb: 10 }}>
-      {/* Back Button */}
       <Container maxWidth="lg" sx={{ mt: 4, mb: 3 }}>
         <Link href="/campaigns" passHref style={{ textDecoration: "none" }}>
           <Button startIcon={<ArrowBackIcon />} color="inherit" sx={{ fontWeight: 600 }}>
@@ -88,7 +87,6 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
         </Link>
       </Container>
 
-      {/* Hero Image */}
       <Box
         sx={{
           width: "100%",
@@ -154,13 +152,10 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
         </Box>
       </Box>
 
-      {/* Main Content */}
       <Container maxWidth="lg" sx={{ mt: 5 }}>
         <Grid container spacing={5}>
-          {/* Left Column (Info, Milestones, History) */}
           <Grid size={{ xs: 12, md: 8 }}>
             <Stack spacing={5}>
-              {/* Description */}
               <Box>
                 <Typography variant="h5" sx={{ mb: 2, fontWeight: 700 }}>
                   About the Campaign
@@ -170,7 +165,6 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
                 </Typography>
               </Box>
 
-              {/* Creator Card */}
               <Paper variant="outlined" sx={{ p: 3, borderRadius: 2, borderColor: "divider", backgroundColor: "background.paper" }}>
                 <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase", display: "block", mb: 1 }}>
                   {t("creator")}
@@ -192,7 +186,6 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
                 </Box>
               </Paper>
 
-              {/* Milestones */}
               <Box>
                 <Typography variant="h5" sx={{ mb: 3, fontWeight: 700 }}>
                   {t("milestones")}
@@ -206,7 +199,6 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
                 )}
               </Box>
 
-              {/* Donation History */}
               <Box>
                 <Typography variant="h5" sx={{ mb: 3, fontWeight: 700 }}>
                   {t("donations")}
@@ -257,7 +249,6 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
             </Stack>
           </Grid>
 
-          {/* Right Column (Escrow and Sticky Actions) */}
           <Grid size={{ xs: 12, md: 4 }}>
             <Box
               sx={{
@@ -268,7 +259,6 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
                 gap: 3,
               }}
             >
-              {/* Escrow Card */}
               <Paper
                 variant="outlined"
                 sx={{

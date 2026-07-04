@@ -35,7 +35,6 @@ export default function Home() {
 
   const campaigns: Campaign[] = data?.campaigns || [];
 
-  // Compute stats
   const totalCampaigns = campaigns.length;
 
   const totalSolLamports = campaigns.reduce(
@@ -80,7 +79,6 @@ export default function Home() {
 
   return (
     <Box sx={{ pb: 10 }}>
-      {/* Hero Section */}
       <Box
         sx={{
           py: { xs: 10, md: 14 },
@@ -126,7 +124,6 @@ export default function Home() {
         </Container>
       </Box>
 
-      {/* Stats Section */}
       <Container maxWidth="lg" sx={{ mt: -6, position: "relative", zIndex: 2 }}>
         <Grid container spacing={3}>
           <Grid size={{ xs: 12, sm: 4 }}>
@@ -180,7 +177,6 @@ export default function Home() {
         </Grid>
       </Container>
 
-      {/* Featured Section */}
       <Container maxWidth="lg" sx={{ mt: 10 }}>
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", mb: 4 }}>
           <Box>
@@ -228,7 +224,6 @@ export default function Home() {
         )}
       </Container>
 
-      {/* How It Works Section */}
       <Container maxWidth="lg" sx={{ mt: 12 }}>
         <Box sx={{ textAlign: "center", mb: 8 }}>
           <Typography variant="h2" sx={{ fontSize: "2rem", mb: 2 }}>

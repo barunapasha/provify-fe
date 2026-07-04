@@ -71,7 +71,6 @@ function CreateCampaignForm() {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
 
-  // Local UI Validation
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleNext = () => {
@@ -110,7 +109,6 @@ function CreateCampaignForm() {
     }
 
     if (activeStep === 1) {
-      // Validate milestones
       let hasMilestoneError = false;
       milestones.forEach((m, idx) => {
         if (!m.title.trim()) {
@@ -147,7 +145,6 @@ function CreateCampaignForm() {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Milestone actions
   const handleAddMilestone = () => {
     if (milestones.length < 5) {
       setMilestones([...milestones, { title: "", targetAmountSol: 0 }]);
@@ -178,7 +175,6 @@ function CreateCampaignForm() {
     setMilestones(updated);
   };
 
-  // Image Upload Action
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -209,7 +205,6 @@ function CreateCampaignForm() {
     }
   };
 
-  // Deploy Action
   const handleDeploy = async () => {
     try {
       const deadlineDate = new Date(deadline);

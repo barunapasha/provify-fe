@@ -30,26 +30,21 @@ export default function CampaignsPage() {
   const t = useTranslations("campaigns");
   const { campaigns, isLoading } = useCampaigns();
 
-  // Filter states
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [status, setStatus] = useState("All");
   const [sortBy, setSortBy] = useState("newest");
   const [page, setPage] = useState(1);
 
-  // Apply filters and sorting
   const filteredCampaigns = useMemo(() => {
     // eslint-disable-next-line react-hooks/purity
     const now = Date.now() / 1000;
     return campaigns
       .filter((c) => {
-        // Search filter
         const matchesSearch = c.title.toLowerCase().includes(search.toLowerCase());
 
-        // Category filter
         const matchesCategory = category === "All" || c.category === category;
 
-        // Status filter
         const matchesStatus =
           status === "All" ||
           (status === "Active" && "active" in c.status) ||
@@ -77,7 +72,6 @@ export default function CampaignsPage() {
       });
   }, [campaigns, search, category, status, sortBy]);
 
-  // Pagination logic
   const pageCount = Math.ceil(filteredCampaigns.length / ITEMS_PER_PAGE);
   const paginatedCampaigns = useMemo(() => {
     const start = (page - 1) * ITEMS_PER_PAGE;
@@ -91,7 +85,6 @@ export default function CampaignsPage() {
 
   return (
     <Container maxWidth="lg" sx={{ py: 6 }}>
-      {/* Title */}
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", mb: 6 }}>
         <Typography variant="h2" sx={{ fontSize: "2.4rem" }}>
           {t("title")}
@@ -103,7 +96,6 @@ export default function CampaignsPage() {
         )}
       </Box>
 
-      {/* Filter and Search Bar */}
       <Box
         sx={{
           p: 3,
@@ -115,7 +107,6 @@ export default function CampaignsPage() {
         }}
       >
         <Grid container spacing={2} sx={{ alignItems: "center" }}>
-          {/* Search */}
           <Grid size={{ xs: 12, md: 4 }}>
             <TextField
               fullWidth
@@ -138,7 +129,6 @@ export default function CampaignsPage() {
             />
           </Grid>
 
-          {/* Category */}
           <Grid size={{ xs: 12, sm: 6, md: 3 }}>
             <FormControl fullWidth size="small">
               <InputLabel>{t("filterCategory")}</InputLabel>
@@ -160,7 +150,6 @@ export default function CampaignsPage() {
             </FormControl>
           </Grid>
 
-          {/* Sort */}
           <Grid size={{ xs: 12, sm: 6, md: 2 }}>
             <FormControl fullWidth size="small">
               <InputLabel>{t("sortBy")}</InputLabel>
@@ -176,7 +165,6 @@ export default function CampaignsPage() {
             </FormControl>
           </Grid>
 
-          {/* Status */}
           <Grid size={{ xs: 12, md: 3 }}>
             <ToggleButtonGroup
               fullWidth
@@ -212,7 +200,6 @@ export default function CampaignsPage() {
         </Grid>
       </Box>
 
-      {/* Main Grid */}
       {isLoading ? (
         <Grid container spacing={3}>
           {[1, 2, 6].map((i) => (
@@ -245,7 +232,6 @@ export default function CampaignsPage() {
             ))}
           </Grid>
 
-          {/* Pagination */}
           {pageCount > 1 && (
             <Box sx={{ display: "flex", justifyContent: "center", mt: 6 }}>
               <Pagination
