@@ -13,17 +13,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Convert Web API File to Pinata-compatible FileObject
-    const arrayBuffer = await file.arrayBuffer();
-    const pinataFile = {
-      name: file.name,
-      size: file.size,
-      type: file.type,
-      lastModified: file.lastModified,
-      arrayBuffer: async () => arrayBuffer,
-    };
-
-    const result = await pinata.upload.file(pinataFile);
+    const result = await pinata.upload.file(file);
 
     return NextResponse.json({
       uri: `ipfs://${result.IpfsHash}`,
