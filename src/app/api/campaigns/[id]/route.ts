@@ -38,7 +38,7 @@ export async function GET(
 
     let campaignData;
     try {
-      campaignData = coder.decode("campaign", accountInfo.data);
+      campaignData = coder.decode("Campaign", accountInfo.data);
     } catch (err) {
       console.error("Failed to deserialize campaign:", err);
       return NextResponse.json(
@@ -73,7 +73,7 @@ export async function GET(
       .map((info, idx) => {
         if (!info) return null;
         try {
-          const mData = coder.decode("milestone", info.data);
+          const mData = coder.decode("Milestone", info.data);
           if (!mData) return null;
           return {
             pubkey: milestonePdas[idx].toBase58(),

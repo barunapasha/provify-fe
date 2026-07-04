@@ -27,7 +27,7 @@ async function fetchDonations(campaignId: string) {
   return accounts
     .map((account) => {
       try {
-        const donationData = coder.decode("donation", account.account.data);
+        const donationData = coder.decode("Donation", account.account.data);
         if (!donationData) return null;
         return {
           pubkey: account.pubkey.toBase58(),

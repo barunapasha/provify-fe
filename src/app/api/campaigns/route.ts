@@ -17,7 +17,7 @@ export async function GET() {
     const campaigns = accounts
       .map((account) => {
         try {
-          const campaignData = coder.decode("campaign", account.account.data);
+          const campaignData = coder.decode("Campaign", account.account.data);
           if (!campaignData) return null;
           return {
             pubkey: account.pubkey.toBase58(),

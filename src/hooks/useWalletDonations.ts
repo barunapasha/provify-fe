@@ -40,7 +40,7 @@ async function fetchWalletDonations(
   const decoded = accounts
     .map((account) => {
       try {
-        const d = coder.decode("donation", account.account.data);
+        const d = coder.decode("Donation", account.account.data);
         if (!d) return null;
         return {
           pubkey: account.pubkey.toBase58(),
@@ -69,7 +69,7 @@ async function fetchWalletDonations(
       const info = infos[idx];
       if (!info) return;
       try {
-        const cData = coder.decode("campaign", info.data);
+        const cData = coder.decode("Campaign", info.data);
         if (cData) {
           titleMap[pubkeyStr] = cData.title;
         }
