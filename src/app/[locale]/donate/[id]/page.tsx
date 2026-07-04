@@ -48,7 +48,12 @@ function DonateForm({ id }: { id: string }) {
         target: parseFloat(campaign.targetAmount) / LAMPORTS_PER_SOL,
         daysLeft: Math.max(
           0,
-          Math.ceil((new Date(parseInt(campaign.deadline) * 1000).getTime() - Date.now()) / (1000 * 3600 * 24))
+          Math.ceil(
+            (new Date(parseInt(campaign.deadline) * 1000).getTime() -
+              // eslint-disable-next-line react-hooks/purity
+              Date.now()) /
+              (1000 * 3600 * 24)
+          )
         ),
       }
     : null;

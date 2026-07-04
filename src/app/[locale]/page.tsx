@@ -238,7 +238,7 @@ export default function Home() {
 
         <Box sx={{ maxWidth: 800, mx: "auto" }}>
           <Stepper orientation="vertical" connector={null}>
-            {steps.map((step, index) => (
+            {steps.map((step) => (
               <Step active key={step.label}>
                 <StepLabel
                   icon={

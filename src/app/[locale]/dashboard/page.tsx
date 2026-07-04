@@ -40,6 +40,8 @@ function DashboardContent() {
   const t = useTranslations("dashboard");
   const { publicKey } = useWallet();
   const { campaigns, isLoading } = useCreatorCampaigns(publicKey?.toBase58() ?? null);
+  // eslint-disable-next-line react-hooks/purity
+  const now = Date.now();
 
   // Compute stats
   const totalCampaigns = campaigns.length;
@@ -204,7 +206,7 @@ function DashboardContent() {
             const current = parseFloat(campaign.currentAmount) / LAMPORTS_PER_SOL;
             const target = parseFloat(campaign.targetAmount) / LAMPORTS_PER_SOL;
             const deadlineDate = new Date(parseInt(campaign.deadline) * 1000);
-            const daysLeft = Math.max(0, Math.ceil((deadlineDate.getTime() - Date.now()) / (1000 * 3600 * 24)));
+            const daysLeft = Math.max(0, Math.ceil((deadlineDate.getTime() - now) / (1000 * 3600 * 24)));
 
             return (
               <Grid size={{ xs: 12, md: 6 }} key={campaign.pubkey}>

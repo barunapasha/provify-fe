@@ -48,6 +48,7 @@ export function useCreateCampaign() {
 
     try {
       const creatorPubkey = wallet.publicKey;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const program = getProgram(connection, wallet as any);
 
       // Convert target amount to lamports
@@ -132,9 +133,9 @@ export function useCreateCampaign() {
 
       setStatus("success");
       return campaignPdaKey.toBase58();
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Campaign creation failed:", err);
-      const errorMsg = err.message || "Transaction failed";
+      const errorMsg = err instanceof Error ? err.message : "Transaction failed";
       setError(errorMsg);
       setStatus("error");
       throw err;

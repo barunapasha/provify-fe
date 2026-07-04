@@ -23,7 +23,6 @@ import { useCampaigns } from "@/hooks/useCampaigns";
 import { useTranslations } from "next-intl";
 import CampaignCard from "@/components/ui/CampaignCard";
 import EmptyState from "@/components/ui/EmptyState";
-import { Campaign } from "@/types/campaign";
 
 const ITEMS_PER_PAGE = 9;
 
@@ -40,6 +39,8 @@ export default function CampaignsPage() {
 
   // Apply filters and sorting
   const filteredCampaigns = useMemo(() => {
+    // eslint-disable-next-line react-hooks/purity
+    const now = Date.now() / 1000;
     return campaigns
       .filter((c) => {
         // Search filter
@@ -65,7 +66,6 @@ export default function CampaignsPage() {
           return (parseFloat(b.currentAmount) || 0) - (parseFloat(a.currentAmount) || 0);
         }
         if (sortBy === "ending_soon") {
-          const now = Date.now() / 1000;
           const aTimeLeft = parseInt(a.deadline) - now;
           const bTimeLeft = parseInt(b.deadline) - now;
           // Filter out ended ones from being prioritized
@@ -217,7 +217,7 @@ export default function CampaignsPage() {
         <Grid container spacing={3}>
           {[1, 2, 6].map((i) => (
             <Grid size={{ xs: 12, sm: 6, md: 4 }} key={i}>
-              <Card sx={{ height: 350, border: "1px solid #E2E2EC" } as any}>
+              <Card sx={{ height: 350, border: "1px solid #E2E2EC" }}>
                 <Skeleton variant="rectangular" height={180} />
                 <Box sx={{ p: 3 }}>
                   <Skeleton width="40%" height={24} sx={{ mb: 1 }} />

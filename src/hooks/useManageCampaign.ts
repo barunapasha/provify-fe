@@ -29,6 +29,7 @@ export function useManageCampaign() {
 
     try {
       const campaignPubkey = new PublicKey(campaignId);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const program = getProgram(connection, wallet as any);
 
       // Derive Milestone PDA: seeds = [b"milestone", campaign, index]
@@ -61,9 +62,9 @@ export function useManageCampaign() {
 
       setTxHash(signature);
       return signature;
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Submit proof failed:", err);
-      const errorMsg = err.message || "Submit proof failed";
+      const errorMsg = err instanceof Error ? err.message : "Submit proof failed";
       setError(errorMsg);
       throw err;
     } finally {
@@ -83,6 +84,7 @@ export function useManageCampaign() {
 
     try {
       const campaignPubkey = new PublicKey(campaignId);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const program = getProgram(connection, wallet as any);
 
       // Derive target Milestone PDA
@@ -137,9 +139,9 @@ export function useManageCampaign() {
 
       setTxHash(signature);
       return signature;
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Disbursement request failed:", err);
-      const errorMsg = err.message || "Disbursement request failed";
+      const errorMsg = err instanceof Error ? err.message : "Disbursement request failed";
       setError(errorMsg);
       throw err;
     } finally {
@@ -155,6 +157,7 @@ export function useManageCampaign() {
 
     try {
       const campaignPubkey = new PublicKey(campaignId);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const program = getProgram(connection, wallet as any);
 
       const signature = await program.methods
@@ -177,9 +180,9 @@ export function useManageCampaign() {
 
       setTxHash(signature);
       return signature;
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Close campaign failed:", err);
-      const errorMsg = err.message || "Close campaign failed";
+      const errorMsg = err instanceof Error ? err.message : "Close campaign failed";
       setError(errorMsg);
       throw err;
     } finally {

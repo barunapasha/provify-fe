@@ -43,6 +43,7 @@ export function useDonate(campaignId: string, currentDonationCount: string) {
         PROGRAM_ID
       );
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const program = getProgram(connection, wallet as any);
 
       const signature = await program.methods
@@ -66,9 +67,9 @@ export function useDonate(campaignId: string, currentDonationCount: string) {
 
       setTxHash(signature);
       return signature;
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Donation failed:", err);
-      const errorMsg = err.message || "Transaction failed";
+      const errorMsg = err instanceof Error ? err.message : "Transaction failed";
       setError(errorMsg);
       throw err;
     } finally {

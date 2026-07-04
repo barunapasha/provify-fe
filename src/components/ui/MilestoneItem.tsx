@@ -13,7 +13,6 @@ interface MilestoneItemProps {
 export default function MilestoneItem({ milestone }: MilestoneItemProps) {
   const target = parseFloat(milestone.targetAmount) / LAMPORTS_PER_SOL;
   const released = parseFloat(milestone.releasedAmount) / LAMPORTS_PER_SOL;
-  const statusStr = typeof milestone.status === "string" ? milestone.status : Object.keys(milestone.status)[0];
 
   return (
     <Paper

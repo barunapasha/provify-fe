@@ -9,7 +9,6 @@ interface StatusBadgeProps {
 
 export default function StatusBadge({ status }: StatusBadgeProps) {
   let label = "";
-  let color: "default" | "primary" | "secondary" | "success" | "warning" | "info" = "default";
   let bg = "";
   let text = "";
 

@@ -1,5 +1,5 @@
-export type CampaignStatus = { active: {} } | { completed: {} } | { closed: {} };
-export type MilestoneStatus = { pending: {} } | { proofSubmitted: {} } | { released: {} };
+export type CampaignStatus = { active: Record<string, never> } | { completed: Record<string, never> } | { closed: Record<string, never> };
+export type MilestoneStatus = { pending: Record<string, never> } | { proofSubmitted: Record<string, never> } | { released: Record<string, never> };
 
 export interface Campaign {
   pubkey: string;

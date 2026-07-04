@@ -16,7 +16,6 @@ import {
   Paper,
   Divider,
   Stack,
-  IconButton,
   List,
   ListItem,
   ListItemText,
@@ -32,7 +31,6 @@ import {
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
@@ -163,8 +161,8 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
       await submitProof(campaignId, activeMilestoneIdx, proofUri);
       setProofDialogOpen(false);
       mutateCampaign();
-    } catch (err: any) {
-      setActionError(err.message || "Failed to submit proof");
+    } catch (err: unknown) {
+      setActionError(err instanceof Error ? err.message : "Failed to submit proof");
     }
   };
 
@@ -182,8 +180,8 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
       await requestDisbursement(campaignId, activeMilestoneIdx, campaign.milestoneCount);
       setDisburseDialogOpen(false);
       mutateCampaign();
-    } catch (err: any) {
-      setActionError(err.message || "Failed to request disbursement");
+    } catch (err: unknown) {
+      setActionError(err instanceof Error ? err.message : "Failed to request disbursement");
     }
   };
 
@@ -195,8 +193,8 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
       await closeCampaign(campaignId);
       setCloseDialogOpen(false);
       mutateCampaign();
-    } catch (err: any) {
-      setActionError(err.message || "Failed to close campaign");
+    } catch (err: unknown) {
+      setActionError(err instanceof Error ? err.message : "Failed to close campaign");
     }
   };
 

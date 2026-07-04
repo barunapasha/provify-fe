@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, use } from "react";
+import { useState } from "react";
 import { useRouter } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import {
@@ -36,7 +36,6 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ErrorIcon from "@mui/icons-material/Error";
 import WalletGuard from "@/components/wallet/WalletGuard";
 import { useCreateCampaign, MilestoneInput } from "@/hooks/useCreateCampaign";
-import { useWallet } from "@solana/wallet-adapter-react";
 
 const CATEGORIES = ["Kesehatan", "Pendidikan", "Bencana", "Sosial", "Lainnya"];
 
@@ -51,8 +50,7 @@ export default function CreateCampaignPage() {
 function CreateCampaignForm() {
   const t = useTranslations("create");
   const router = useRouter();
-  const wallet = useWallet();
-  const { createCampaign, status, currentMilestone, totalMilestones, txHash, campaignPda, error: deployError } = useCreateCampaign();
+  const { createCampaign, status, currentMilestone, totalMilestones, campaignPda, error: deployError } = useCreateCampaign();
 
   const [activeStep, setActiveStep] = useState(0);
 
@@ -69,7 +67,6 @@ function CreateCampaignForm() {
   ]);
 
   // Step 3: Cover Image
-  const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageUri, setImageUri] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
@@ -186,7 +183,6 @@ function CreateCampaignForm() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setImageFile(file);
     setIsUploading(true);
     setUploadError(null);
 
@@ -205,7 +201,7 @@ function CreateCampaignForm() {
 
       const data = await response.json();
       setImageUri(data.uri);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
       setUploadError(t("uploadError"));
     } finally {
