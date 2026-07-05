@@ -99,7 +99,6 @@ export const lightTheme = createTheme({
           borderRadius: 4,
           padding: "10px 22px",
           boxShadow: "none",
-          border: "2px solid transparent",
           "&:hover": {
             boxShadow: "none",
           },
@@ -107,12 +106,13 @@ export const lightTheme = createTheme({
         contained: {
           backgroundColor: "#0E0E12",
           color: "#FFFFFF",
+          border: "2px solid transparent",
           "&:hover": {
             backgroundColor: "#5F3CFE",
           },
         },
         outlined: {
-          borderColor: "#0E0E12",
+          border: "2px solid #0E0E12",
           color: "#0E0E12",
           "&:hover": {
             borderColor: "#5F3CFE",
@@ -177,7 +177,6 @@ export const darkTheme = createTheme({
           borderRadius: 4,
           padding: "10px 22px",
           boxShadow: "none",
-          border: "2px solid transparent",
           "&:hover": {
             boxShadow: "none",
           },
@@ -185,13 +184,14 @@ export const darkTheme = createTheme({
         contained: {
           backgroundColor: "#F9FAFC",
           color: "#0E0E12",
+          border: "2px solid transparent",
           "&:hover": {
             backgroundColor: "#5F3CFE",
             color: "#FFFFFF",
           },
         },
         outlined: {
-          borderColor: "#F9FAFC",
+          border: "2px solid #F9FAFC",
           color: "#F9FAFC",
           "&:hover": {
             borderColor: "#5F3CFE",

@@ -84,7 +84,7 @@ export default function Home() {
           py: { xs: 10, md: 14 },
           borderBottom: "1px solid",
           borderColor: "divider",
-          backgroundColor: "#FFFFFF",
+          backgroundColor: "background.paper",
           position: "relative",
           overflow: "hidden",
         }}
