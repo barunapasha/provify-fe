@@ -4,6 +4,7 @@ import ThemeRegistry from "@/components/ThemeRegistry";
 import SolanaProviders from "@/components/wallet/SolanaProviders";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 import { Box } from "@mui/material";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
@@ -50,6 +51,7 @@ export default async function RootLayout({
                 </Box>
                 <Footer />
               </Box>
+              <LanguageSwitcher />
             </SolanaProviders>
           </ThemeRegistry>
         </NextIntlClientProvider>

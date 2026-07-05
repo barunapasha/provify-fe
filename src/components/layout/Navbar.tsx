@@ -17,8 +17,11 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
 import { Link, usePathname } from "@/i18n/routing";
 import ConnectButton from "../wallet/ConnectButton";
+import { useThemeMode } from "../ThemeRegistry";
 
 const navItems = [
   { label: "Campaigns", path: "/campaigns" },
@@ -28,6 +31,7 @@ const navItems = [
 ];
 
 export default function Navbar() {
+  const { mode, toggleThemeMode } = useThemeMode();
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
 
@@ -104,7 +108,10 @@ export default function Navbar() {
             ))}
           </Box>
 
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+            <IconButton onClick={toggleThemeMode} color="inherit" sx={{ color: "text.primary" }}>
+              {mode === "light" ? <DarkModeIcon /> : <LightModeIcon />}
+            </IconButton>
             <ConnectButton />
             <IconButton
               color="inherit"
