@@ -1,6 +1,7 @@
 "use client";
 
 import { Box, CircularProgress, Typography } from "@mui/material";
+import DecryptedText from "./DecryptedText";
 
 interface LoadingSpinnerProps {
   message?: string;
@@ -20,7 +21,7 @@ export default function LoadingSpinner({ message = "Loading on-chain data..." }:
     >
       <CircularProgress size={40} thickness={4} color="primary" />
       <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
-        {message}
+        <DecryptedText text={message} animateOn="view" sequential />
       </Typography>
     </Box>
   );
