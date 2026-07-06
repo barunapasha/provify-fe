@@ -43,14 +43,18 @@ export default function Navbar() {
     return pathname?.includes(path);
   };
 
+  const isDark = mode === "dark";
+
   return (
     <AppBar
       position="sticky"
       color="default"
       sx={{
         borderBottom: "1px solid",
-        borderColor: "divider",
-        backgroundColor: "background.paper",
+        borderColor: isDark ? "rgba(42, 42, 53, 0.5)" : "divider",
+        backgroundColor: isDark ? "rgba(22, 22, 30, 0.75)" : "background.paper",
+        backdropFilter: isDark ? "blur(12px)" : "none",
+        WebkitBackdropFilter: isDark ? "blur(12px)" : "none",
       }}
       elevation={0}
     >
