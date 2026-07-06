@@ -1,9 +1,10 @@
 "use client";
 
 import { createContext, useContext, useState } from "react";
-import { ThemeProvider, CssBaseline } from "@mui/material";
+import { ThemeProvider, CssBaseline, Box } from "@mui/material";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v16-appRouter";
 import { lightTheme, darkTheme } from "@/lib/theme";
+import Silk from "./ui/Silk";
 
 type ThemeMode = "light" | "dark";
 
@@ -48,7 +49,26 @@ export default function ThemeRegistry({
       <ThemeModeContext.Provider value={{ mode, toggleThemeMode }}>
         <ThemeProvider theme={activeTheme}>
           <CssBaseline />
-          {children}
+          <Box sx={{ position: "relative", minHeight: "100vh", backgroundColor: "background.default" }}>
+            {mode === "dark" && (
+              <Box
+                sx={{
+                  position: "fixed",
+                  top: 0,
+                  left: 0,
+                  width: "100vw",
+                  height: "100vh",
+                  zIndex: 0,
+                  pointerEvents: "none",
+                }}
+              >
+                <Silk speed={2} scale={0.7} color="#1c183a" noiseIntensity={0.8} />
+              </Box>
+            )}
+            <Box sx={{ position: "relative", zIndex: 1, backgroundColor: "transparent" }}>
+              {children}
+            </Box>
+          </Box>
         </ThemeProvider>
       </ThemeModeContext.Provider>
     </AppRouterCacheProvider>
