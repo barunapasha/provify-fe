@@ -36,6 +36,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ErrorIcon from "@mui/icons-material/Error";
 import WalletGuard from "@/components/wallet/WalletGuard";
 import { useCreateCampaign, MilestoneInput } from "@/hooks/useCreateCampaign";
+import DecryptedText from "@/components/ui/DecryptedText";
 
 const CATEGORIES = ["Kesehatan", "Pendidikan", "Bencana", "Sosial", "Lainnya"];
 
@@ -735,7 +736,7 @@ function CreateCampaignForm() {
                 <CircularProgress size={50} />
                 <Box>
                   <Typography variant="h6" sx={{ fontWeight: 800, mb: 1 }}>
-                    {t("creatingCampaign")}
+                    <DecryptedText text={t("creatingCampaign")} animateOn="view" sequential />
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     Please approve the transaction in Phantom Wallet...
@@ -749,7 +750,7 @@ function CreateCampaignForm() {
                 <CircularProgress size={50} />
                 <Box>
                   <Typography variant="h6" sx={{ fontWeight: 800, mb: 1 }}>
-                    {t("creatingMilestones", { current: currentMilestone, total: totalMilestones })}
+                    <DecryptedText text={t("creatingMilestones", { current: currentMilestone, total: totalMilestones })} animateOn="view" sequential />
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     Deploying milestones sequentially. Please approve each transaction in your wallet...
