@@ -16,6 +16,7 @@ import {
   Stack,
 } from "@mui/material";
 import { Link } from "@/i18n/routing";
+import { useTheme } from "@mui/material/styles";
 import useSWR from "swr";
 import { useTranslations } from "next-intl";
 import CampaignCard from "@/components/ui/CampaignCard";
@@ -30,6 +31,8 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function Home() {
+  const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
   const t = useTranslations("hero");
   const { data, isLoading } = useSWR("/api/campaigns", fetcher);
 
@@ -84,7 +87,7 @@ export default function Home() {
           py: { xs: 10, md: 14 },
           borderBottom: "1px solid",
           borderColor: "divider",
-          backgroundColor: "background.paper",
+          backgroundColor: isDark ? "transparent" : "background.paper",
           position: "relative",
           overflow: "hidden",
         }}

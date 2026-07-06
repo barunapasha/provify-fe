@@ -1,9 +1,13 @@
 "use client";
 
 import { Box, Container, Typography, Chip, Link as MuiLink } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import { Link } from "@/i18n/routing";
 
 export default function Footer() {
+  const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
+
   return (
     <Box
       component="footer"
@@ -12,7 +16,7 @@ export default function Footer() {
         mt: "auto",
         borderTop: "1px solid",
         borderColor: "divider",
-        backgroundColor: "background.paper",
+        backgroundColor: isDark ? "transparent" : "background.paper",
       }}
     >
       <Container maxWidth="lg">
