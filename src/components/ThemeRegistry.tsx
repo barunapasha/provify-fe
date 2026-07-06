@@ -62,7 +62,7 @@ export default function ThemeRegistry({
                   pointerEvents: "none",
                 }}
               >
-                <Silk speed={2} scale={0.7} color="#1c183a" noiseIntensity={0.8} />
+                <Silk speed={5} scale={0.7} color="#545357" noiseIntensity={1} />
               </Box>
             )}
             <Box sx={{ position: "relative", zIndex: 1, backgroundColor: "transparent" }}>
