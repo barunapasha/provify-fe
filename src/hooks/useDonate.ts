@@ -40,7 +40,7 @@ export function useDonate(campaignId: string, currentDonationCount: string) {
           donorPubkey.toBuffer(),
           countBuffer,
         ],
-        PROGRAM_ID
+        PROGRAM_ID,
       );
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -61,14 +61,15 @@ export function useDonate(campaignId: string, currentDonationCount: string) {
           signature,
           ...latestBlockhash,
         },
-        "confirmed"
+        "confirmed",
       );
 
       setTxHash(signature);
       return signature;
     } catch (err: unknown) {
       console.error("Donation failed:", err);
-      const errorMsg = err instanceof Error ? err.message : "Transaction failed";
+      const errorMsg =
+        err instanceof Error ? err.message : "Transaction failed";
       setError(errorMsg);
       throw err;
     } finally {

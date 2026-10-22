@@ -43,10 +43,20 @@ export default function MilestoneItem({ milestone }: MilestoneItemProps) {
         </Typography>
       </Box>
 
-      <Box sx={{ display: "flex", alignItems: "center", gap: 2, width: { xs: "100%", sm: "auto" } }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: 2,
+          width: { xs: "100%", sm: "auto" },
+        }}
+      >
         {milestone.proofUri && (
           <Link
-            href={milestone.proofUri.replace("ipfs://", "https://gateway.pinata.cloud/ipfs/")}
+            href={milestone.proofUri.replace(
+              "ipfs://",
+              "https://gateway.pinata.cloud/ipfs/",
+            )}
             target="_blank"
             rel="noopener"
             sx={{ textDecoration: "none" }}

@@ -35,7 +35,9 @@ export default function HistoryPage() {
 function HistoryContent() {
   const t = useTranslations("history");
   const { publicKey } = useWallet();
-  const { donations, isLoading } = useWalletDonations(publicKey?.toBase58() ?? null);
+  const { donations, isLoading } = useWalletDonations(
+    publicKey?.toBase58() ?? null,
+  );
 
   return (
     <Container maxWidth="lg" sx={{ py: 6 }}>
@@ -44,8 +46,13 @@ function HistoryContent() {
           {t("title")}
         </Typography>
         {publicKey && (
-          <Typography variant="body2" color="text.secondary" sx={{ fontFamily: "monospace" }}>
-            {publicKey.toBase58().slice(0, 8)}...{publicKey.toBase58().slice(-8)}
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ fontFamily: "monospace" }}
+          >
+            {publicKey.toBase58().slice(0, 8)}...
+            {publicKey.toBase58().slice(-8)}
           </Typography>
         )}
       </Box>
@@ -60,11 +67,17 @@ function HistoryContent() {
           actionPath="/campaigns"
         />
       ) : (
-        <TableContainer component={Paper} variant="outlined" sx={{ borderRadius: 2, borderColor: "divider" }}>
+        <TableContainer
+          component={Paper}
+          variant="outlined"
+          sx={{ borderRadius: 2, borderColor: "divider" }}
+        >
           <Table>
             <TableHead sx={{ backgroundColor: "#F9FAFC" }}>
               <TableRow>
-                <TableCell sx={{ fontWeight: 700 }}>{t("campaignCol")}</TableCell>
+                <TableCell sx={{ fontWeight: 700 }}>
+                  {t("campaignCol")}
+                </TableCell>
                 <TableCell sx={{ fontWeight: 700 }} align="right">
                   {t("amountCol")}
                 </TableCell>
@@ -78,10 +91,14 @@ function HistoryContent() {
             <TableBody>
               {donations.map((d) => {
                 const amount = parseFloat(d.amount) / LAMPORTS_PER_SOL;
-                const date = new Date(parseInt(d.timestamp) * 1000).toLocaleDateString();
+                const date = new Date(
+                  parseInt(d.timestamp) * 1000,
+                ).toLocaleDateString();
                 return (
                   <TableRow key={d.pubkey} hover>
-                    <TableCell sx={{ fontWeight: 600 }}>{d.campaignTitle}</TableCell>
+                    <TableCell sx={{ fontWeight: 600 }}>
+                      {d.campaignTitle}
+                    </TableCell>
                     <TableCell align="right" sx={{ fontWeight: 700 }}>
                       {amount.toLocaleString()} SOL
                     </TableCell>

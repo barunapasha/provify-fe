@@ -15,7 +15,8 @@ export default function LanguageSwitcher() {
   };
 
   const flag = locale === "id" ? "🇮🇩" : "🇺🇸";
-  const title = locale === "id" ? "Switch to English" : "Ubah ke Bahasa Indonesia";
+  const title =
+    locale === "id" ? "Switch to English" : "Ubah ke Bahasa Indonesia";
 
   return (
     <Tooltip title={title} placement="left" arrow>

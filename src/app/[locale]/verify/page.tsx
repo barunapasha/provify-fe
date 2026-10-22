@@ -43,7 +43,10 @@ export default function VerifySearchPage() {
 
   return (
     <Container maxWidth="sm" sx={{ py: 12 }}>
-      <Card variant="outlined" sx={{ borderRadius: 4, borderColor: "divider", p: 2 }}>
+      <Card
+        variant="outlined"
+        sx={{ borderRadius: 4, borderColor: "divider", p: 2 }}
+      >
         <CardContent>
           <Box sx={{ textAlign: "center", mb: 5 }}>
             <Box
@@ -80,7 +83,11 @@ export default function VerifySearchPage() {
 
           <form onSubmit={handleSubmit}>
             <Stack spacing={3}>
-              {error && <Alert severity="error" sx={{ borderRadius: 2 }}>{error}</Alert>}
+              {error && (
+                <Alert severity="error" sx={{ borderRadius: 2 }}>
+                  {error}
+                </Alert>
+              )}
               <TextField
                 fullWidth
                 label={t("inputLabel")}
@@ -95,7 +102,12 @@ export default function VerifySearchPage() {
                 color="primary"
                 size="large"
                 fullWidth
-                sx={{ py: 1.5, borderRadius: 2, fontWeight: 700, textTransform: "none" }}
+                sx={{
+                  py: 1.5,
+                  borderRadius: 2,
+                  fontWeight: 700,
+                  textTransform: "none",
+                }}
               >
                 {t("btnVerify")}
               </Button>

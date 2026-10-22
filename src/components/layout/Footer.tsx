@@ -1,6 +1,12 @@
 "use client";
 
-import { Box, Container, Typography, Chip, Link as MuiLink } from "@mui/material";
+import {
+  Box,
+  Container,
+  Typography,
+  Chip,
+  Link as MuiLink,
+} from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { Link } from "@/i18n/routing";
 
@@ -61,7 +67,11 @@ export default function Footer() {
 
           <Box sx={{ display: "flex", gap: 4 }}>
             <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-              <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700, letterSpacing: "0.1em" }}>
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{ fontWeight: 700, letterSpacing: "0.1em" }}
+              >
                 SYSTEM
               </Typography>
               <MuiLink
@@ -70,12 +80,22 @@ export default function Footer() {
                 rel="noopener"
                 color="inherit"
                 variant="body2"
-                sx={{ textDecoration: "none", "&:hover": { color: "primary.main" } }}
+                sx={{
+                  textDecoration: "none",
+                  "&:hover": { color: "primary.main" },
+                }}
               >
                 Solana Explorer
               </MuiLink>
-              <Link href="/verify/tx" passHref style={{ textDecoration: "none", color: "inherit" }}>
-                <Typography variant="body2" sx={{ "&:hover": { color: "primary.main" } }}>
+              <Link
+                href="/verify/tx"
+                passHref
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <Typography
+                  variant="body2"
+                  sx={{ "&:hover": { color: "primary.main" } }}
+                >
                   Tx Verifier
                 </Typography>
               </Link>
@@ -83,7 +103,16 @@ export default function Footer() {
           </Box>
         </Box>
 
-        <Box sx={{ mt: 6, pt: 3, borderTop: "1px solid", borderColor: "divider", display: "flex", justifyContent: "space-between" }}>
+        <Box
+          sx={{
+            mt: 6,
+            pt: 3,
+            borderTop: "1px solid",
+            borderColor: "divider",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
           <Typography variant="caption" color="text.secondary">
             &copy; {new Date().getFullYear()} Provify. All rights reserved.
           </Typography>

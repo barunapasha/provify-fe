@@ -10,7 +10,10 @@ import { Donation } from "@/types/campaign";
 
 const coder = new BorshAccountsCoder(IDL as never);
 function getAccountDiscriminator(accountName: string): Uint8Array {
-  return createHash("sha256").update(`account:${accountName}`).digest().subarray(0, 8);
+  return createHash("sha256")
+    .update(`account:${accountName}`)
+    .digest()
+    .subarray(0, 8);
 }
 
 async function fetchDonations(campaignId: string) {
@@ -28,7 +31,7 @@ async function fetchDonations(campaignId: string) {
       },
       {
         memcmp: {
-          offset: 8, 
+          offset: 8,
           bytes: campaignPubkey.toBase58(),
         },
       },
@@ -60,7 +63,7 @@ async function fetchDonations(campaignId: string) {
 export function useDonations(campaignId: string) {
   const { data, error, isLoading, mutate } = useSWR(
     campaignId ? `donations-${campaignId}` : null,
-    () => fetchDonations(campaignId)
+    () => fetchDonations(campaignId),
   );
 
   return {

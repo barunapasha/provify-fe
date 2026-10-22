@@ -12,7 +12,8 @@ export default function StatusBadge({ status }: StatusBadgeProps) {
   let bg = "";
   let text = "";
 
-  const statusStr = typeof status === "string" ? status : Object.keys(status)[0];
+  const statusStr =
+    typeof status === "string" ? status : Object.keys(status)[0];
 
   switch (statusStr.toLowerCase()) {
     case "active":

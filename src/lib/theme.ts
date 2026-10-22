@@ -157,10 +157,10 @@ export const darkTheme = createTheme({
     },
     background: {
       default: "#0E0E12", // Rich Charcoal from palette
-      paper: "#16161E",   // Lighter card background
+      paper: "#16161E", // Lighter card background
     },
     text: {
-      primary: "#F9FAFC",   // Off-white
+      primary: "#F9FAFC", // Off-white
       secondary: "#A0A0B0", // Muted gray
     },
     divider: "#2A2A35",

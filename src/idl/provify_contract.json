@@ -9,24 +9,13 @@
   "instructions": [
     {
       "name": "close_campaign",
-      "discriminator": [
-        65,
-        49,
-        110,
-        7,
-        63,
-        238,
-        206,
-        77
-      ],
+      "discriminator": [65, 49, 110, 7, 63, 238, 206, 77],
       "accounts": [
         {
           "name": "creator",
           "writable": true,
           "signer": true,
-          "relations": [
-            "campaign"
-          ]
+          "relations": ["campaign"]
         },
         {
           "name": "campaign",
@@ -41,16 +30,7 @@
     },
     {
       "name": "create_campaign",
-      "discriminator": [
-        111,
-        131,
-        187,
-        98,
-        160,
-        193,
-        114,
-        244
-      ],
+      "discriminator": [111, 131, 187, 98, 160, 193, 114, 244],
       "accounts": [
         {
           "name": "creator",
@@ -64,16 +44,7 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [
-                  99,
-                  97,
-                  109,
-                  112,
-                  97,
-                  105,
-                  103,
-                  110
-                ]
+                "value": [99, 97, 109, 112, 97, 105, 103, 110]
               },
               {
                 "kind": "account",
@@ -124,24 +95,13 @@
     },
     {
       "name": "create_milestone",
-      "discriminator": [
-        239,
-        58,
-        201,
-        28,
-        40,
-        186,
-        173,
-        48
-      ],
+      "discriminator": [239, 58, 201, 28, 40, 186, 173, 48],
       "accounts": [
         {
           "name": "creator",
           "writable": true,
           "signer": true,
-          "relations": [
-            "campaign"
-          ]
+          "relations": ["campaign"]
         },
         {
           "name": "campaign"
@@ -172,16 +132,7 @@
     },
     {
       "name": "donate",
-      "discriminator": [
-        121,
-        186,
-        218,
-        211,
-        73,
-        70,
-        196,
-        180
-      ],
+      "discriminator": [121, 186, 218, 211, 73, 70, 196, 180],
       "accounts": [
         {
           "name": "donor",
@@ -199,16 +150,7 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [
-                  100,
-                  111,
-                  110,
-                  97,
-                  116,
-                  105,
-                  111,
-                  110
-                ]
+                "value": [100, 111, 110, 97, 116, 105, 111, 110]
               },
               {
                 "kind": "account",
@@ -240,24 +182,13 @@
     },
     {
       "name": "request_disbursement",
-      "discriminator": [
-        252,
-        238,
-        81,
-        213,
-        174,
-        115,
-        250,
-        122
-      ],
+      "discriminator": [252, 238, 81, 213, 174, 115, 250, 122],
       "accounts": [
         {
           "name": "creator",
           "writable": true,
           "signer": true,
-          "relations": [
-            "campaign"
-          ]
+          "relations": ["campaign"]
         },
         {
           "name": "campaign",
@@ -280,24 +211,13 @@
     },
     {
       "name": "submit_proof",
-      "discriminator": [
-        54,
-        241,
-        46,
-        84,
-        4,
-        212,
-        46,
-        94
-      ],
+      "discriminator": [54, 241, 46, 84, 4, 212, 46, 94],
       "accounts": [
         {
           "name": "creator",
           "writable": true,
           "signer": true,
-          "relations": [
-            "campaign"
-          ]
+          "relations": ["campaign"]
         },
         {
           "name": "campaign"
@@ -318,42 +238,15 @@
   "accounts": [
     {
       "name": "Campaign",
-      "discriminator": [
-        50,
-        40,
-        49,
-        11,
-        157,
-        220,
-        229,
-        192
-      ]
+      "discriminator": [50, 40, 49, 11, 157, 220, 229, 192]
     },
     {
       "name": "Donation",
-      "discriminator": [
-        189,
-        210,
-        54,
-        77,
-        216,
-        85,
-        7,
-        68
-      ]
+      "discriminator": [189, 210, 54, 77, 216, 85, 7, 68]
     },
     {
       "name": "Milestone",
-      "discriminator": [
-        38,
-        210,
-        239,
-        177,
-        85,
-        184,
-        10,
-        44
-      ]
+      "discriminator": [38, 210, 239, 177, 85, 184, 10, 44]
     }
   ],
   "errors": [

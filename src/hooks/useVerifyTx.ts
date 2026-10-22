@@ -1,7 +1,11 @@
 import { connection } from "@/lib/solana";
 import { PROGRAM_ID } from "@/lib/program";
 import { PublicKey } from "@solana/web3.js";
-import { BorshInstructionCoder, BorshAccountsCoder, utils } from "@coral-xyz/anchor";
+import {
+  BorshInstructionCoder,
+  BorshAccountsCoder,
+  utils,
+} from "@coral-xyz/anchor";
 import { IDL } from "@/idl/provify_contract";
 import useSWR from "swr";
 
@@ -10,7 +14,13 @@ const accountsCoder = new BorshAccountsCoder(IDL as never);
 
 export interface ProvifyTxResult {
   signature: string;
-  type: "create_campaign" | "create_milestone" | "donate" | "submit_proof" | "request_disbursement" | "close_campaign";
+  type:
+    | "create_campaign"
+    | "create_milestone"
+    | "donate"
+    | "submit_proof"
+    | "request_disbursement"
+    | "close_campaign";
   slot: number;
   timestamp: number;
   fee: number;
@@ -44,17 +54,16 @@ function getHumanType(anchorName: string): ProvifyTxResult["type"] {
   return mapping[anchorName] || (anchorName as ProvifyTxResult["type"]);
 }
 
-function deriveMilestoneIndex(campaignPubkeyStr: string, milestonePubkeyStr: string): number {
+function deriveMilestoneIndex(
+  campaignPubkeyStr: string,
+  milestonePubkeyStr: string,
+): number {
   const campaignKey = new PublicKey(campaignPubkeyStr);
   const milestoneKey = new PublicKey(milestonePubkeyStr);
   for (let i = 0; i < 10; i++) {
     const [pda] = PublicKey.findProgramAddressSync(
-      [
-        Buffer.from("milestone"),
-        campaignKey.toBuffer(),
-        Buffer.from([i]),
-      ],
-      PROGRAM_ID
+      [Buffer.from("milestone"), campaignKey.toBuffer(), Buffer.from([i])],
+      PROGRAM_ID,
     );
     if (pda.equals(milestoneKey)) {
       return i;
@@ -63,7 +72,9 @@ function deriveMilestoneIndex(campaignPubkeyStr: string, milestonePubkeyStr: str
   return -1;
 }
 
-async function verifyTransaction(txSignature: string): Promise<ProvifyTxResult | null> {
+async function verifyTransaction(
+  txSignature: string,
+): Promise<ProvifyTxResult | null> {
   if (!txSignature) return null;
 
   const tx = await connection.getParsedTransaction(txSignature, {
@@ -77,7 +88,7 @@ async function verifyTransaction(txSignature: string): Promise<ProvifyTxResult |
 
   const programIdStr = PROGRAM_ID.toBase58();
   const ix = tx.transaction.message.instructions.find(
-    (instruction) => instruction.programId.toBase58() === programIdStr
+    (instruction) => instruction.programId.toBase58() === programIdStr,
   );
 
   if (!ix) {
@@ -104,7 +115,9 @@ async function verifyTransaction(txSignature: string): Promise<ProvifyTxResult |
 
   const type = decoded.name;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const accounts = ix.accounts.map((acc: any) => acc.toBase58 ? acc.toBase58() : acc.toString());
+  const accounts = ix.accounts.map((acc: any) =>
+    acc.toBase58 ? acc.toBase58() : acc.toString(),
+  );
 
   const result: ProvifyTxResult = {
     signature: txSignature,
@@ -141,10 +154,15 @@ async function verifyTransaction(txSignature: string): Promise<ProvifyTxResult |
     result.campaign = accounts[1];
     const milestonePubkeyStr = accounts[2];
     result.proofUri = decoded.data.proofUri;
-    result.milestoneIndex = deriveMilestoneIndex(accounts[1], milestonePubkeyStr);
+    result.milestoneIndex = deriveMilestoneIndex(
+      accounts[1],
+      milestonePubkeyStr,
+    );
 
     try {
-      const mInfo = await connection.getAccountInfo(new PublicKey(milestonePubkeyStr));
+      const mInfo = await connection.getAccountInfo(
+        new PublicKey(milestonePubkeyStr),
+      );
       if (mInfo) {
         const mData = accountsCoder.decode("Milestone", mInfo.data);
         if (mData) {
@@ -158,11 +176,16 @@ async function verifyTransaction(txSignature: string): Promise<ProvifyTxResult |
     result.creator = accounts[0];
     result.campaign = accounts[1];
     const milestonePubkeyStr = accounts[2];
-    result.milestoneIndex = deriveMilestoneIndex(accounts[1], milestonePubkeyStr);
+    result.milestoneIndex = deriveMilestoneIndex(
+      accounts[1],
+      milestonePubkeyStr,
+    );
 
     let amountLamports = "0";
     try {
-      const mInfo = await connection.getAccountInfo(new PublicKey(milestonePubkeyStr));
+      const mInfo = await connection.getAccountInfo(
+        new PublicKey(milestonePubkeyStr),
+      );
       if (mInfo) {
         const mData = accountsCoder.decode("Milestone", mInfo.data);
         if (mData) {
@@ -177,7 +200,7 @@ async function verifyTransaction(txSignature: string): Promise<ProvifyTxResult |
     if (amountLamports === "0" && tx.meta) {
       const creatorAddress = accounts[0];
       const accountKeys = tx.transaction.message.accountKeys.map((k) =>
-        typeof k === "string" ? k : k.pubkey.toBase58()
+        typeof k === "string" ? k : k.pubkey.toBase58(),
       );
       const creatorIdx = accountKeys.indexOf(creatorAddress);
       if (creatorIdx !== -1) {
@@ -206,12 +229,13 @@ export function useVerifyTx(txSignature: string | null) {
     {
       shouldRetryOnError: false,
       revalidateOnFocus: false,
-    }
+    },
   );
 
   return {
     data: data || null,
     isLoading,
-    error: error instanceof Error ? error.message : error ? String(error) : null,
+    error:
+      error instanceof Error ? error.message : error ? String(error) : null,
   };
 }

@@ -51,7 +51,14 @@ export default function CreateCampaignPage() {
 function CreateCampaignForm() {
   const t = useTranslations("create");
   const router = useRouter();
-  const { createCampaign, status, currentMilestone, totalMilestones, campaignPda, error: deployError } = useCreateCampaign();
+  const {
+    createCampaign,
+    status,
+    currentMilestone,
+    totalMilestones,
+    campaignPda,
+    error: deployError,
+  } = useCreateCampaign();
 
   const [activeStep, setActiveStep] = useState(0);
 
@@ -89,9 +96,12 @@ function CreateCampaignForm() {
 
     if (activeStep === 0) {
       if (!title.trim()) newErrors.title = "Title is required";
-      if (title.length > 100) newErrors.title = "Title must be 100 characters or less";
-      if (!description.trim()) newErrors.description = "Description is required";
-      if (description.length > 500) newErrors.description = "Description must be 500 characters or less";
+      if (title.length > 100)
+        newErrors.title = "Title must be 100 characters or less";
+      if (!description.trim())
+        newErrors.description = "Description is required";
+      if (description.length > 500)
+        newErrors.description = "Description must be 500 characters or less";
       if (!category) newErrors.category = "Category is required";
 
       const target = parseFloat(targetAmount);
@@ -117,7 +127,8 @@ function CreateCampaignForm() {
           hasMilestoneError = true;
         }
         if (m.title.length > 100) {
-          newErrors[`m-title-${idx}`] = "Milestone title must be 100 characters or less";
+          newErrors[`m-title-${idx}`] =
+            "Milestone title must be 100 characters or less";
           hasMilestoneError = true;
         }
         if (m.targetAmountSol <= 0) {
@@ -127,11 +138,17 @@ function CreateCampaignForm() {
       });
 
       if (!hasMilestoneError) {
-        const sum = milestones.reduce((acc, curr) => acc + curr.targetAmountSol, 0);
+        const sum = milestones.reduce(
+          (acc, curr) => acc + curr.targetAmountSol,
+          0,
+        );
         const target = parseFloat(targetAmount);
         // Compare with a small tolerance for floating point precision issues
         if (Math.abs(sum - target) > 0.0001) {
-          newErrors.milestonesSum = t("sumMismatchError", { sum: sum.toFixed(3), target: target.toFixed(3) });
+          newErrors.milestonesSum = t("sumMismatchError", {
+            sum: sum.toFixed(3),
+            target: target.toFixed(3),
+          });
         }
       }
     }
@@ -162,7 +179,7 @@ function CreateCampaignForm() {
   const handleMilestoneChange = (
     index: number,
     field: keyof MilestoneInput,
-    value: string
+    value: string,
   ) => {
     const updated = milestones.map((m, i) => {
       if (i === index) {
@@ -219,7 +236,7 @@ function CreateCampaignForm() {
         category,
         target,
         deadlineUnix,
-        milestones
+        milestones,
       );
     } catch (err) {
       console.error("Deployment failed:", err);
@@ -233,7 +250,10 @@ function CreateCampaignForm() {
     t("stepPreview"),
   ];
 
-  const milestonesSum = milestones.reduce((acc, curr) => acc + curr.targetAmountSol, 0);
+  const milestonesSum = milestones.reduce(
+    (acc, curr) => acc + curr.targetAmountSol,
+    0,
+  );
   const targetVal = parseFloat(targetAmount) || 0;
 
   return (
@@ -267,7 +287,10 @@ function CreateCampaignForm() {
       </Stepper>
 
       {/* Form Content */}
-      <Card variant="outlined" sx={{ borderRadius: 4, borderColor: "divider", mb: 4 }}>
+      <Card
+        variant="outlined"
+        sx={{ borderRadius: 4, borderColor: "divider", mb: 4 }}
+      >
         <CardContent sx={{ p: 4 }}>
           {/* Step 1: Details */}
           {activeStep === 0 && (
@@ -358,16 +381,27 @@ function CreateCampaignForm() {
                 <Typography variant="h5" sx={{ fontWeight: 800, mb: 1 }}>
                   {t("milestonesTitle")}
                 </Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ mb: 3 }}
+                >
                   {t("milestonesDesc")}
                 </Typography>
               </Box>
 
               {/* Running total tracker */}
               <Box sx={{ mb: 2 }}>
-                <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    mb: 1,
+                  }}
+                >
                   <Typography variant="body2" sx={{ fontWeight: 700 }}>
-                    Total Allocated: {milestonesSum.toFixed(3)} / {targetVal.toFixed(3)} SOL
+                    Total Allocated: {milestonesSum.toFixed(3)} /{" "}
+                    {targetVal.toFixed(3)} SOL
                   </Typography>
                   <Typography
                     variant="body2"
@@ -385,13 +419,16 @@ function CreateCampaignForm() {
                 </Box>
                 <LinearProgress
                   variant="determinate"
-                  value={Math.min(100, (milestonesSum / (targetVal || 1)) * 100)}
+                  value={Math.min(
+                    100,
+                    (milestonesSum / (targetVal || 1)) * 100,
+                  )}
                   color={
                     Math.abs(milestonesSum - targetVal) < 0.0001
                       ? "success"
                       : milestonesSum > targetVal
-                      ? "error"
-                      : "primary"
+                        ? "error"
+                        : "primary"
                   }
                   sx={{ height: 8, borderRadius: 1 }}
                 />
@@ -421,18 +458,27 @@ function CreateCampaignForm() {
                       borderRadius: 3,
                     }}
                   >
-                    <Typography variant="subtitle2" sx={{ fontWeight: 800, mt: 1, minWidth: 90 }}>
+                    <Typography
+                      variant="subtitle2"
+                      sx={{ fontWeight: 800, mt: 1, minWidth: 90 }}
+                    >
                       {t("milestoneLabel", { index: idx + 1 })}
                     </Typography>
 
-                    <Grid container spacing={2} sx={{ width: "100%", flexGrow: 1 }}>
+                    <Grid
+                      container
+                      spacing={2}
+                      sx={{ width: "100%", flexGrow: 1 }}
+                    >
                       <Grid size={{ xs: 12, sm: 8 }}>
                         <TextField
                           label={t("milestoneTitleLabel")}
                           placeholder={t("milestoneTitlePlaceholder")}
                           fullWidth
                           value={milestone.title}
-                          onChange={(e) => handleMilestoneChange(idx, "title", e.target.value)}
+                          onChange={(e) =>
+                            handleMilestoneChange(idx, "title", e.target.value)
+                          }
                           error={!!errors[`m-title-${idx}`]}
                           helperText={errors[`m-title-${idx}`]}
                           slotProps={{ htmlInput: { maxLength: 100 } }}
@@ -444,13 +490,21 @@ function CreateCampaignForm() {
                           type="number"
                           fullWidth
                           value={milestone.targetAmountSol || ""}
-                          onChange={(e) => handleMilestoneChange(idx, "targetAmountSol", e.target.value)}
+                          onChange={(e) =>
+                            handleMilestoneChange(
+                              idx,
+                              "targetAmountSol",
+                              e.target.value,
+                            )
+                          }
                           error={!!errors[`m-amount-${idx}`]}
                           helperText={errors[`m-amount-${idx}`]}
                           slotProps={{
                             input: {
                               startAdornment: (
-                                <InputAdornment position="start">SOL</InputAdornment>
+                                <InputAdornment position="start">
+                                  SOL
+                                </InputAdornment>
                               ),
                             },
                           }}
@@ -462,7 +516,10 @@ function CreateCampaignForm() {
                       <IconButton
                         color="error"
                         onClick={() => handleRemoveMilestone(idx)}
-                        sx={{ mt: { xs: 0, sm: 1 }, alignSelf: { xs: "flex-end", sm: "auto" } }}
+                        sx={{
+                          mt: { xs: 0, sm: 1 },
+                          alignSelf: { xs: "flex-end", sm: "auto" },
+                        }}
                       >
                         <DeleteOutlineIcon />
                       </IconButton>
@@ -488,7 +545,10 @@ function CreateCampaignForm() {
 
           {/* Step 3: Cover Image */}
           {activeStep === 2 && (
-            <Stack spacing={3} sx={{ alignItems: "center", textAlign: "center" }}>
+            <Stack
+              spacing={3}
+              sx={{ alignItems: "center", textAlign: "center" }}
+            >
               <Box>
                 <Typography variant="h5" sx={{ fontWeight: 800, mb: 1 }}>
                   {t("imageTitle")}
@@ -514,7 +574,10 @@ function CreateCampaignForm() {
                 <Box sx={{ width: "100%", maxWidth: 400 }}>
                   <Box
                     component="img"
-                    src={imageUri.replace("ipfs://", "https://gateway.pinata.cloud/ipfs/")}
+                    src={imageUri.replace(
+                      "ipfs://",
+                      "https://gateway.pinata.cloud/ipfs/",
+                    )}
                     alt="Cover preview"
                     sx={{
                       width: "100%",
@@ -526,7 +589,11 @@ function CreateCampaignForm() {
                       mb: 2,
                     }}
                   />
-                  <Typography variant="caption" color="text.secondary" sx={{ wordBreak: "break-all", display: "block" }}>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    sx={{ wordBreak: "break-all", display: "block" }}
+                  >
                     IPFS: {imageUri}
                   </Typography>
                   <Button
@@ -537,7 +604,12 @@ function CreateCampaignForm() {
                     sx={{ mt: 1 }}
                   >
                     Change Image
-                    <input type="file" accept="image/*" hidden onChange={handleImageChange} />
+                    <input
+                      type="file"
+                      accept="image/*"
+                      hidden
+                      onChange={handleImageChange}
+                    />
                   </Button>
                 </Box>
               ) : (
@@ -566,10 +638,21 @@ function CreateCampaignForm() {
                     </Stack>
                   ) : (
                     <>
-                      <CloudUploadIcon sx={{ fontSize: 48, color: "text.secondary" }} />
-                      <Button component="label" variant="contained" color="primary">
+                      <CloudUploadIcon
+                        sx={{ fontSize: 48, color: "text.secondary" }}
+                      />
+                      <Button
+                        component="label"
+                        variant="contained"
+                        color="primary"
+                      >
                         {t("uploadBtn")}
-                        <input type="file" accept="image/*" hidden onChange={handleImageChange} />
+                        <input
+                          type="file"
+                          accept="image/*"
+                          hidden
+                          onChange={handleImageChange}
+                        />
                       </Button>
                       <Typography variant="caption" color="text.secondary">
                         PNG, JPG, or WEBP up to 5MB
@@ -598,7 +681,10 @@ function CreateCampaignForm() {
                 <Grid size={{ xs: 12, md: 5 }}>
                   <Box
                     component="img"
-                    src={imageUri.replace("ipfs://", "https://gateway.pinata.cloud/ipfs/")}
+                    src={imageUri.replace(
+                      "ipfs://",
+                      "https://gateway.pinata.cloud/ipfs/",
+                    )}
                     alt={title}
                     sx={{
                       width: "100%",
@@ -624,11 +710,17 @@ function CreateCampaignForm() {
                     <Typography variant="h4" sx={{ fontWeight: 900 }}>
                       {title}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: "pre-line" }}>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ whiteSpace: "pre-line" }}
+                    >
                       {description}
                     </Typography>
                     <Divider />
-                    <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                    <Box
+                      sx={{ display: "flex", justifyContent: "space-between" }}
+                    >
                       <Typography variant="body2" color="text.secondary">
                         Target Pendanaan:
                       </Typography>
@@ -636,7 +728,9 @@ function CreateCampaignForm() {
                         {targetVal.toLocaleString()} SOL
                       </Typography>
                     </Box>
-                    <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                    <Box
+                      sx={{ display: "flex", justifyContent: "space-between" }}
+                    >
                       <Typography variant="body2" color="text.secondary">
                         Batas Waktu:
                       </Typography>
@@ -736,7 +830,11 @@ function CreateCampaignForm() {
                 <CircularProgress size={50} />
                 <Box>
                   <Typography variant="h6" sx={{ fontWeight: 800, mb: 1 }}>
-                    <DecryptedText text={t("creatingCampaign")} animateOn="view" sequential />
+                    <DecryptedText
+                      text={t("creatingCampaign")}
+                      animateOn="view"
+                      sequential
+                    />
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     Please approve the transaction in Phantom Wallet...
@@ -750,10 +848,18 @@ function CreateCampaignForm() {
                 <CircularProgress size={50} />
                 <Box>
                   <Typography variant="h6" sx={{ fontWeight: 800, mb: 1 }}>
-                    <DecryptedText text={t("creatingMilestones", { current: currentMilestone, total: totalMilestones })} animateOn="view" sequential />
+                    <DecryptedText
+                      text={t("creatingMilestones", {
+                        current: currentMilestone,
+                        total: totalMilestones,
+                      })}
+                      animateOn="view"
+                      sequential
+                    />
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Deploying milestones sequentially. Please approve each transaction in your wallet...
+                    Deploying milestones sequentially. Please approve each
+                    transaction in your wallet...
                   </Typography>
                 </Box>
               </>
@@ -766,11 +872,24 @@ function CreateCampaignForm() {
                   <Typography variant="h6" sx={{ fontWeight: 800, mb: 1 }}>
                     {t("deploySuccess")}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                    Your transparent crowdfunding campaign is now live on Solana.
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ mb: 1 }}
+                  >
+                    Your transparent crowdfunding campaign is now live on
+                    Solana.
                   </Typography>
                   {campaignPda && (
-                    <Typography variant="caption" color="primary.main" sx={{ fontFamily: "monospace", display: "block", wordBreak: "break-all" }}>
+                    <Typography
+                      variant="caption"
+                      color="primary.main"
+                      sx={{
+                        fontFamily: "monospace",
+                        display: "block",
+                        wordBreak: "break-all",
+                      }}
+                    >
                       PDA: {campaignPda}
                     </Typography>
                   )}
@@ -794,7 +913,11 @@ function CreateCampaignForm() {
                   <Typography variant="h6" sx={{ fontWeight: 800, mb: 1 }}>
                     Deployment Failed
                   </Typography>
-                  <Typography variant="body2" color="error.main" sx={{ wordBreak: "break-all" }}>
+                  <Typography
+                    variant="body2"
+                    color="error.main"
+                    sx={{ wordBreak: "break-all" }}
+                  >
                     {deployError || "Transaction rejected or network error."}
                   </Typography>
                 </Box>

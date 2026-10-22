@@ -41,7 +41,9 @@ export default function CampaignsPage() {
     const now = Date.now() / 1000;
     return campaigns
       .filter((c) => {
-        const matchesSearch = c.title.toLowerCase().includes(search.toLowerCase());
+        const matchesSearch = c.title
+          .toLowerCase()
+          .includes(search.toLowerCase());
 
         const matchesCategory = category === "All" || c.category === category;
 
@@ -58,7 +60,10 @@ export default function CampaignsPage() {
           return parseInt(b.deadline) - parseInt(a.deadline); // ponytail: simple proxy for creation order
         }
         if (sortBy === "most_funded") {
-          return (parseFloat(b.currentAmount) || 0) - (parseFloat(a.currentAmount) || 0);
+          return (
+            (parseFloat(b.currentAmount) || 0) -
+            (parseFloat(a.currentAmount) || 0)
+          );
         }
         if (sortBy === "ending_soon") {
           const aTimeLeft = parseInt(a.deadline) - now;
@@ -78,19 +83,33 @@ export default function CampaignsPage() {
     return filteredCampaigns.slice(start, start + ITEMS_PER_PAGE);
   }, [filteredCampaigns, page]);
 
-  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number,
+  ) => {
     setPage(value);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
     <Container maxWidth="lg" sx={{ py: 6 }}>
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", mb: 6 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "baseline",
+          mb: 6,
+        }}
+      >
         <Typography variant="h2" sx={{ fontSize: "2.4rem" }}>
           {t("title")}
         </Typography>
         {!isLoading && (
-          <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 600 }}>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ fontWeight: 600 }}
+          >
             {filteredCampaigns.length} campaigns found
           </Typography>
         )}

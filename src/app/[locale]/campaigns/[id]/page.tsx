@@ -35,7 +35,11 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import LaunchIcon from "@mui/icons-material/Launch";
 
-export default function CampaignDetailPage({ params }: { params: Promise<{ id: string }> }) {
+export default function CampaignDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = use(params);
   const t = useTranslations("detail");
   const { publicKey } = useWallet();
@@ -53,7 +57,10 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
     const current = parseFloat(campaign.currentAmount) / LAMPORTS_PER_SOL;
     const target = parseFloat(campaign.targetAmount) / LAMPORTS_PER_SOL;
     const deadlineDate = new Date(parseInt(campaign.deadline) * 1000);
-    const daysLeft = Math.max(0, Math.ceil((deadlineDate.getTime() - Date.now()) / (1000 * 3600 * 24)));
+    const daysLeft = Math.max(
+      0,
+      Math.ceil((deadlineDate.getTime() - Date.now()) / (1000 * 3600 * 24)),
+    );
     return { current, target, daysLeft };
   }, [campaign]);
 
@@ -82,7 +89,11 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
     <Box sx={{ pb: 10 }}>
       <Container maxWidth="lg" sx={{ mt: 4, mb: 3 }}>
         <Link href="/campaigns" passHref style={{ textDecoration: "none" }}>
-          <Button startIcon={<ArrowBackIcon />} color="inherit" sx={{ fontWeight: 600 }}>
+          <Button
+            startIcon={<ArrowBackIcon />}
+            color="inherit"
+            sx={{ fontWeight: 600 }}
+          >
             Back to Campaigns
           </Button>
         </Link>
@@ -100,7 +111,10 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
       >
         <Box
           component="img"
-          src={campaign.imageUri.replace("ipfs://", "https://gateway.pinata.cloud/ipfs/")}
+          src={campaign.imageUri.replace(
+            "ipfs://",
+            "https://gateway.pinata.cloud/ipfs/",
+          )}
           alt={campaign.title}
           sx={{
             width: "100%",
@@ -115,14 +129,23 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
             left: 0,
             right: 0,
             height: "100%",
-            background: "linear-gradient(to top, rgba(14, 14, 18, 0.7) 0%, rgba(14, 14, 18, 0) 60%)",
+            background:
+              "linear-gradient(to top, rgba(14, 14, 18, 0.7) 0%, rgba(14, 14, 18, 0) 60%)",
             display: "flex",
             alignItems: "flex-end",
             p: 4,
           }}
         >
           <Container maxWidth="lg">
-            <Box sx={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 2, mb: 1 }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                alignItems: "center",
+                gap: 2,
+                mb: 1,
+              }}
+            >
               <Chip
                 label={campaign.category}
                 size="small"
@@ -134,7 +157,9 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
                   borderRadius: 1,
                 }}
               />
-              <StatusBadge status={{ [effectiveCampaignStatus(campaign)]: {} }} />
+              <StatusBadge
+                status={{ [effectiveCampaignStatus(campaign)]: {} }}
+              />
             </Box>
             <Typography
               variant="h3"
@@ -161,17 +186,54 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
                 <Typography variant="h5" sx={{ mb: 2, fontWeight: 700 }}>
                   About the Campaign
                 </Typography>
-                <Typography variant="body1" color="text.secondary" sx={{ whiteSpace: "pre-line" }}>
+                <Typography
+                  variant="body1"
+                  color="text.secondary"
+                  sx={{ whiteSpace: "pre-line" }}
+                >
                   {campaign.description}
                 </Typography>
               </Box>
 
-              <Paper variant="outlined" sx={{ p: 3, borderRadius: 2, borderColor: "divider", backgroundColor: "background.paper" }}>
-                <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase", display: "block", mb: 1 }}>
+              <Paper
+                variant="outlined"
+                sx={{
+                  p: 3,
+                  borderRadius: 2,
+                  borderColor: "divider",
+                  backgroundColor: "background.paper",
+                }}
+              >
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{
+                    fontWeight: 700,
+                    letterSpacing: "0.05em",
+                    textTransform: "uppercase",
+                    display: "block",
+                    mb: 1,
+                  }}
+                >
                   {t("creator")}
                 </Typography>
-                <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 1 }}>
-                  <Typography variant="body2" sx={{ fontFamily: "monospace", wordBreak: "break-all", fontWeight: 600 }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    flexWrap: "wrap",
+                    gap: 1,
+                  }}
+                >
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      fontFamily: "monospace",
+                      wordBreak: "break-all",
+                      fontWeight: 600,
+                    }}
+                  >
                     {campaign.creator}
                   </Typography>
                   <Link
@@ -180,7 +242,10 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
                     rel="noopener"
                     style={{ textDecoration: "none" }}
                   >
-                    <Button size="small" endIcon={<LaunchIcon style={{ fontSize: 14 }} />}>
+                    <Button
+                      size="small"
+                      endIcon={<LaunchIcon style={{ fontSize: 14 }} />}
+                    >
                       View Wallet
                     </Button>
                   </Link>
@@ -193,10 +258,15 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
                 </Typography>
                 {campaign.milestones && campaign.milestones.length > 0 ? (
                   campaign.milestones.map((milestone) => (
-                    <MilestoneItem key={milestone.pubkey} milestone={milestone} />
+                    <MilestoneItem
+                      key={milestone.pubkey}
+                      milestone={milestone}
+                    />
                   ))
                 ) : (
-                  <Typography color="text.secondary">No milestones registered for this campaign.</Typography>
+                  <Typography color="text.secondary">
+                    No milestones registered for this campaign.
+                  </Typography>
                 )}
               </Box>
 
@@ -205,28 +275,55 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
                   {t("donations")}
                 </Typography>
                 {donationsLoading ? (
-                  <Skeleton variant="rectangular" height={150} sx={{ borderRadius: 2 }} />
+                  <Skeleton
+                    variant="rectangular"
+                    height={150}
+                    sx={{ borderRadius: 2 }}
+                  />
                 ) : donations.length === 0 ? (
-                  <Paper variant="outlined" sx={{ p: 4, textAlign: "center", borderRadius: 2, borderColor: "divider" }}>
-                    <Typography color="text.secondary">{t("noDonations")}</Typography>
+                  <Paper
+                    variant="outlined"
+                    sx={{
+                      p: 4,
+                      textAlign: "center",
+                      borderRadius: 2,
+                      borderColor: "divider",
+                    }}
+                  >
+                    <Typography color="text.secondary">
+                      {t("noDonations")}
+                    </Typography>
                   </Paper>
                 ) : (
-                  <TableContainer component={Paper} variant="outlined" sx={{ borderRadius: 2, borderColor: "divider" }}>
+                  <TableContainer
+                    component={Paper}
+                    variant="outlined"
+                    sx={{ borderRadius: 2, borderColor: "divider" }}
+                  >
                     <Table>
                       <TableHead sx={{ backgroundColor: "#F9FAFC" }}>
                         <TableRow>
-                          <TableCell sx={{ fontWeight: 700 }}>{t("donorCol")}</TableCell>
+                          <TableCell sx={{ fontWeight: 700 }}>
+                            {t("donorCol")}
+                          </TableCell>
                           <TableCell sx={{ fontWeight: 700 }} align="right">
                             {t("amountCol")}
                           </TableCell>
-                          <TableCell sx={{ fontWeight: 700 }}>{t("dateCol")}</TableCell>
-                          <TableCell sx={{ fontWeight: 700 }}>{t("txCol")}</TableCell>
+                          <TableCell sx={{ fontWeight: 700 }}>
+                            {t("dateCol")}
+                          </TableCell>
+                          <TableCell sx={{ fontWeight: 700 }}>
+                            {t("txCol")}
+                          </TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
                         {donations.slice(0, 10).map((d) => {
-                          const amount = parseFloat(d.amount) / LAMPORTS_PER_SOL;
-                          const date = new Date(parseInt(d.timestamp) * 1000).toLocaleDateString();
+                          const amount =
+                            parseFloat(d.amount) / LAMPORTS_PER_SOL;
+                          const date = new Date(
+                            parseInt(d.timestamp) * 1000,
+                          ).toLocaleDateString();
                           return (
                             <TableRow key={d.pubkey}>
                               <TableCell sx={{ fontFamily: "monospace" }}>
@@ -235,7 +332,9 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
                               <TableCell align="right" sx={{ fontWeight: 700 }}>
                                 {amount.toLocaleString()} SOL
                               </TableCell>
-                              <TableCell color="text.secondary">{date}</TableCell>
+                              <TableCell color="text.secondary">
+                                {date}
+                              </TableCell>
                               <TableCell>
                                 <TxBadge txHash={d.pubkey} />
                               </TableCell>
@@ -276,7 +375,11 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
 
                 <Grid container spacing={2} sx={{ mt: 3, mb: 4 }}>
                   <Grid size={{ xs: 6 }}>
-                    <Typography variant="caption" color="text.secondary" sx={{ display: "block", mb: 0.5 }}>
+                    <Typography
+                      variant="caption"
+                      color="text.secondary"
+                      sx={{ display: "block", mb: 0.5 }}
+                    >
                       {t("donors")}
                     </Typography>
                     <Typography variant="h6" sx={{ fontWeight: 700 }}>
@@ -284,7 +387,11 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
                     </Typography>
                   </Grid>
                   <Grid size={{ xs: 6 }}>
-                    <Typography variant="caption" color="text.secondary" sx={{ display: "block", mb: 0.5 }}>
+                    <Typography
+                      variant="caption"
+                      color="text.secondary"
+                      sx={{ display: "block", mb: 0.5 }}
+                    >
                       {t("daysLeft")}
                     </Typography>
                     <Typography variant="h6" sx={{ fontWeight: 700 }}>
@@ -295,7 +402,11 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
 
                 <Stack spacing={2}>
                   {isCampaignDonatable(campaign) && (
-                    <Link href={`/donate/${campaign.pubkey}`} passHref style={{ textDecoration: "none" }}>
+                    <Link
+                      href={`/donate/${campaign.pubkey}`}
+                      passHref
+                      style={{ textDecoration: "none" }}
+                    >
                       <Button
                         variant="contained"
                         color="primary"
@@ -309,8 +420,17 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
                     </Link>
                   )}
                   {isCreator && (
-                    <Link href={`/dashboard/${campaign.pubkey}`} passHref style={{ textDecoration: "none" }}>
-                      <Button variant="contained" color="secondary" fullWidth size="large">
+                    <Link
+                      href={`/dashboard/${campaign.pubkey}`}
+                      passHref
+                      style={{ textDecoration: "none" }}
+                    >
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        fullWidth
+                        size="large"
+                      >
                         {t("btnManage")}
                       </Button>
                     </Link>
@@ -321,7 +441,12 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
                     rel="noopener"
                     style={{ textDecoration: "none" }}
                   >
-                    <Button variant="outlined" color="primary" fullWidth size="large">
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      fullWidth
+                      size="large"
+                    >
                       {t("btnVerify")}
                     </Button>
                   </Link>

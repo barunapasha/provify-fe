@@ -7,14 +7,18 @@ import { IDL } from "@/idl/provify_contract";
 import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes";
 
 const PROGRAM_ID = new PublicKey(
-  process.env.NEXT_PUBLIC_PROGRAM_ID ?? "7px9KgeAgyrx8juwhcHfhzRc6fbkMT1gdMUtQpaDue7W"
+  process.env.NEXT_PUBLIC_PROGRAM_ID ??
+    "7px9KgeAgyrx8juwhcHfhzRc6fbkMT1gdMUtQpaDue7W",
 );
 
 const coder = new BorshAccountsCoder(IDL as never);
 
 // Anchor account discriminator = first 8 bytes of sha256("account:<Name>")
 function getAccountDiscriminator(accountName: string): Uint8Array {
-  return createHash("sha256").update(`account:${accountName}`).digest().subarray(0, 8);
+  return createHash("sha256")
+    .update(`account:${accountName}`)
+    .digest()
+    .subarray(0, 8);
 }
 
 // Derived from the account name in the IDL, so it stays correct if the
@@ -67,7 +71,7 @@ export async function GET() {
     console.error("Error fetching campaigns:", error);
     return NextResponse.json(
       { error: "Failed to fetch campaigns" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

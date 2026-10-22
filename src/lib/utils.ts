@@ -11,11 +11,7 @@ export function lamportsToSol(lamports: number, decimals = 4): string {
  * Truncate a Solana public key for display.
  * e.g. "7px9...e7W"
  */
-export function truncateAddress(
-  address: string,
-  start = 4,
-  end = 4
-): string {
+export function truncateAddress(address: string, start = 4, end = 4): string {
   if (address.length <= start + end) return address;
   return `${address.slice(0, start)}...${address.slice(-end)}`;
 }
