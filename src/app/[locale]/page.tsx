@@ -21,7 +21,7 @@ import useSWR from "swr";
 import { useTranslations } from "next-intl";
 import CampaignCard from "@/components/ui/CampaignCard";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { Campaign } from "@/types/campaign";
+import { Campaign, effectiveCampaignStatus } from "@/types/campaign";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
@@ -53,7 +53,7 @@ export default function Home() {
 
   // Get 3 most funded active campaigns
   const featured = campaigns
-    .filter((c) => "Active" in c.status)
+    .filter((c) => effectiveCampaignStatus(c) === "Active")
     .sort(
       (a, b) =>
         (parseFloat(b.currentAmount) || 0) - (parseFloat(a.currentAmount) || 0),

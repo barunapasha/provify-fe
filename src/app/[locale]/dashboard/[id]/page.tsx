@@ -41,6 +41,7 @@ import { useCampaign } from "@/hooks/useCampaign";
 import { useDonations } from "@/hooks/useDonations";
 import { useManageCampaign } from "@/hooks/useManageCampaign";
 import StatusBadge from "@/components/ui/StatusBadge";
+import { effectiveCampaignStatus } from "@/types/campaign";
 import EmptyState from "@/components/ui/EmptyState";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
@@ -280,7 +281,9 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
                 >
                   {campaign.title}
                 </Typography>
-                <StatusBadge status={campaign.status} />
+                <StatusBadge
+                  status={{ [effectiveCampaignStatus(campaign)]: {} }}
+                />
               </Stack>
               <Typography
                 variant="caption"

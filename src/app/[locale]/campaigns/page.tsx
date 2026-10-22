@@ -20,6 +20,7 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useCampaigns } from "@/hooks/useCampaigns";
+import { effectiveCampaignStatus } from "@/types/campaign";
 import { useTranslations } from "next-intl";
 import CampaignCard from "@/components/ui/CampaignCard";
 import EmptyState from "@/components/ui/EmptyState";
@@ -47,11 +48,12 @@ export default function CampaignsPage() {
 
         const matchesCategory = category === "All" || c.category === category;
 
+        const effStatus = effectiveCampaignStatus(c);
         const matchesStatus =
           status === "All" ||
-          (status === "Active" && "Active" in c.status) ||
-          (status === "Completed" && "Completed" in c.status) ||
-          (status === "Closed" && "Closed" in c.status);
+          (status === "Active" && effStatus === "Active") ||
+          (status === "Completed" && effStatus === "Completed") ||
+          (status === "Closed" && effStatus === "Closed");
 
         return matchesSearch && matchesCategory && matchesStatus;
       })

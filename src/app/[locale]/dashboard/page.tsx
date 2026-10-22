@@ -27,6 +27,7 @@ import { useCreatorCampaigns } from "@/hooks/useCreatorCampaigns";
 import EmptyState from "@/components/ui/EmptyState";
 import ProgressBar from "@/components/ui/ProgressBar";
 import StatusBadge from "@/components/ui/StatusBadge";
+import { effectiveCampaignStatus } from "@/types/campaign";
 
 export default function CreatorDashboardPage() {
   return (
@@ -52,7 +53,9 @@ function DashboardContent() {
   );
   const totalRaisedSol = totalRaisedLamports / LAMPORTS_PER_SOL;
 
-  const activeCampaigns = campaigns.filter((c) => "Active" in c.status).length;
+  const activeCampaigns = campaigns.filter(
+    (c) => effectiveCampaignStatus(c) === "Active",
+  ).length;
 
   return (
     <Container maxWidth="lg" sx={{ py: 6 }}>
@@ -289,7 +292,11 @@ function DashboardContent() {
                         size="small"
                         sx={{ fontWeight: 700, borderRadius: 1 }}
                       />
-                      <StatusBadge status={campaign.status} />
+                      <StatusBadge
+                        status={{
+                          [effectiveCampaignStatus(campaign)]: {},
+                        }}
+                      />
                     </Box>
 
                     <Typography

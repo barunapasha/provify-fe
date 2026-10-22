@@ -11,7 +11,7 @@ import {
 import { Link } from "@/i18n/routing";
 import ProgressBar from "./ProgressBar";
 import StatusBadge from "./StatusBadge";
-import { Campaign } from "@/types/campaign";
+import { Campaign, effectiveCampaignStatus } from "@/types/campaign";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 
 interface CampaignCardProps {
@@ -26,6 +26,8 @@ export default function CampaignCard({ campaign }: CampaignCardProps) {
     0,
     Math.ceil((deadlineDate.getTime() - Date.now()) / (1000 * 3600 * 24)),
   );
+  // On-chain status is lazy; derive effective status for display
+  const effectiveStatus = effectiveCampaignStatus(campaign);
 
   return (
     <Link
@@ -88,7 +90,7 @@ export default function CampaignCard({ campaign }: CampaignCardProps) {
                 color: "text.primary",
               }}
             />
-            <StatusBadge status={campaign.status} />
+            <StatusBadge status={{ [effectiveStatus]: {} }} />
           </Box>
 
           <Typography
