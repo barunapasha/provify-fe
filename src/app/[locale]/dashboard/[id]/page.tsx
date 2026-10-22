@@ -109,7 +109,7 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
 
   const releasedSol = campaign.milestones
     ? campaign.milestones.reduce(
-        (acc, curr) => acc + ("released" in curr.status ? parseFloat(curr.targetAmount) : 0),
+        (acc, curr) => acc + ("Released" in curr.status ? parseFloat(curr.targetAmount) : 0),
         0
       ) / LAMPORTS_PER_SOL
     : 0;
@@ -307,7 +307,7 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
                         mb: 2,
                         borderRadius: 3,
                         borderColor: "divider",
-                        backgroundColor: "released" in m.status
+                        backgroundColor: "Released" in m.status
                           ? "rgba(0, 240, 181, 0.02)"
                           : "background.paper",
                       }}
@@ -338,19 +338,19 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
                             <Typography variant="caption" color="text.secondary" sx={{ display: "block", fontWeight: 700 }}>
                               STATUS
                             </Typography>
-                            {"pending" in m.status && (
+                            {"Pending" in m.status && (
                               <Chip label={t("pending")} color="warning" size="small" sx={{ borderRadius: 1, fontWeight: 700 }} />
                             )}
                             {"proofSubmitted" in m.status && (
                               <Chip label={t("proofSubmitted")} color="info" size="small" sx={{ borderRadius: 1, fontWeight: 700 }} />
                             )}
-                            {"released" in m.status && (
+                            {"Released" in m.status && (
                               <Chip label={t("released")} color="success" size="small" sx={{ borderRadius: 1, fontWeight: 700 }} />
                             )}
                           </Box>
 
                           {/* Action Buttons based on status */}
-                          {"pending" in m.status && (
+                          {"Pending" in m.status && (
                             <Button
                               variant="outlined"
                               size="small"
@@ -373,7 +373,7 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
                             </Button>
                           )}
 
-                          {"released" in m.status && (
+                          {"Released" in m.status && (
                             <Stack direction="row" spacing={0.5} sx={{ alignItems: "center", justifyContent: { xs: "flex-start", sm: "flex-end" } }}>
                               <CheckCircleIcon color="success" fontSize="small" />
                               <Typography variant="body2" color="success.main" sx={{ fontWeight: 700 }}>
@@ -464,7 +464,7 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
                 variant="outlined"
                 color="error"
                 fullWidth
-                disabled={"closed" in campaign.status}
+                disabled={"Closed" in campaign.status}
                 onClick={() => {
                   setActionError(null);
                   setConfirmTitle("");
@@ -472,7 +472,7 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
                 }}
                 sx={{ py: 1, borderRadius: 2, textTransform: "none", fontWeight: 700 }}
               >
-                {"closed" in campaign.status ? "Campaign Closed" : t("closeBtn")}
+                {"Closed" in campaign.status ? "Campaign Closed" : t("closeBtn")}
               </Button>
             </CardContent>
           </Card>

@@ -50,7 +50,7 @@ function DashboardContent() {
   );
   const totalRaisedSol = totalRaisedLamports / LAMPORTS_PER_SOL;
 
-  const activeCampaigns = campaigns.filter((c) => "active" in c.status).length;
+  const activeCampaigns = campaigns.filter((c) => "Active" in c.status).length;
 
   return (
     <Container maxWidth="lg" sx={{ py: 6 }}>

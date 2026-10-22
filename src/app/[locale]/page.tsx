@@ -53,7 +53,7 @@ export default function Home() {
 
   // Get 3 most funded active campaigns
   const featured = campaigns
-    .filter((c) => "active" in c.status)
+    .filter((c) => "Active" in c.status)
     .sort((a, b) => (parseFloat(b.currentAmount) || 0) - (parseFloat(a.currentAmount) || 0))
     .slice(0, 3);
 

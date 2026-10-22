@@ -1,12 +1,17 @@
 import useSWR from "swr";
+import { createHash } from "crypto";
 import { connection } from "@/lib/solana";
 import { PROGRAM_ID } from "@/lib/program";
 import { PublicKey } from "@solana/web3.js";
 import { BorshAccountsCoder } from "@coral-xyz/anchor";
+import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes";
 import { IDL } from "@/idl/provify_contract";
 import { Donation } from "@/types/campaign";
 
 const coder = new BorshAccountsCoder(IDL as never);
+function getAccountDiscriminator(accountName: string): Uint8Array {
+  return createHash("sha256").update(`account:${accountName}`).digest().subarray(0, 8);
+}
 
 async function fetchDonations(campaignId: string) {
   if (!campaignId) return [];
@@ -17,7 +22,13 @@ async function fetchDonations(campaignId: string) {
     filters: [
       {
         memcmp: {
-          offset: 8, // after discriminator
+          offset: 0,
+          bytes: bs58.encode(getAccountDiscriminator("Donation")),
+        },
+      },
+      {
+        memcmp: {
+          offset: 8, 
           bytes: campaignPubkey.toBase58(),
         },
       },

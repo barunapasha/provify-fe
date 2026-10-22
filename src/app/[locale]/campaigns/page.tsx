@@ -47,9 +47,9 @@ export default function CampaignsPage() {
 
         const matchesStatus =
           status === "All" ||
-          (status === "Active" && "active" in c.status) ||
-          (status === "Completed" && "completed" in c.status) ||
-          (status === "Closed" && "closed" in c.status);
+          (status === "Active" && "Active" in c.status) ||
+          (status === "Completed" && "Completed" in c.status) ||
+          (status === "Closed" && "Closed" in c.status);
 
         return matchesSearch && matchesCategory && matchesStatus;
       })

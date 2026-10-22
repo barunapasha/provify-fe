@@ -54,7 +54,8 @@ export async function GET(
       );
     }
 
-    const milestoneCount = campaignData.milestoneCount;
+    // decoded Anchor data uses snake_case (Rust field names)
+    const milestoneCount = campaignData.milestone_count;
     const milestonePdas: PublicKey[] = [];
     for (let i = 0; i < milestoneCount; i++) {
       const [pda] = PublicKey.findProgramAddressSync(

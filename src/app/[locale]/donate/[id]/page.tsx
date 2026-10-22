@@ -16,6 +16,7 @@ import {
 import { Link } from "@/i18n/routing";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+import { isCampaignDonatable } from "@/types/campaign";
 import { useCampaign } from "@/hooks/useCampaign";
 import { useDonate } from "@/hooks/useDonate";
 import { useTranslations } from "next-intl";
@@ -60,7 +61,7 @@ function DonateForm({ id }: { id: string }) {
 
   const numAmount = parseFloat(amount) || 0;
   const valid = numAmount >= MIN_SOL;
-  const isActive = campaign ? "active" in campaign.status : false;
+  const isActive = campaign ? isCampaignDonatable(campaign) : false;
   const canDonate = valid && isActive && stats != null && stats.daysLeft > 0;
 
   const handleDonate = async () => {

@@ -30,6 +30,7 @@ import TxBadge from "@/components/ui/TxBadge";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import EmptyState from "@/components/ui/EmptyState";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+import { isCampaignDonatable, effectiveCampaignStatus } from "@/types/campaign";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import LaunchIcon from "@mui/icons-material/Launch";
@@ -133,7 +134,7 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
                   borderRadius: 1,
                 }}
               />
-              <StatusBadge status={campaign.status} />
+              <StatusBadge status={{ [effectiveCampaignStatus(campaign)]: {} }} />
             </Box>
             <Typography
               variant="h3"
@@ -293,13 +294,7 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
                 </Grid>
 
                 <Stack spacing={2}>
-                  {isCreator ? (
-                    <Link href={`/dashboard/${campaign.pubkey}`} passHref style={{ textDecoration: "none" }}>
-                      <Button variant="contained" color="primary" fullWidth size="large">
-                        {t("btnManage")}
-                      </Button>
-                    </Link>
-                  ) : (
+                  {isCampaignDonatable(campaign) && (
                     <Link href={`/donate/${campaign.pubkey}`} passHref style={{ textDecoration: "none" }}>
                       <Button
                         variant="contained"
@@ -307,9 +302,16 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
                         fullWidth
                         size="large"
                         startIcon={<AccountBalanceWalletIcon />}
-                        disabled={stats.daysLeft <= 0 || !("active" in campaign.status)}
+                        disabled={!isCampaignDonatable(campaign)}
                       >
                         {t("btnDonate")}
+                      </Button>
+                    </Link>
+                  )}
+                  {isCreator && (
+                    <Link href={`/dashboard/${campaign.pubkey}`} passHref style={{ textDecoration: "none" }}>
+                      <Button variant="contained" color="secondary" fullWidth size="large">
+                        {t("btnManage")}
                       </Button>
                     </Link>
                   )}
