@@ -41,6 +41,7 @@ import { useCampaign } from "@/hooks/useCampaign";
 import { useDonations } from "@/hooks/useDonations";
 import { useManageCampaign } from "@/hooks/useManageCampaign";
 import StatusBadge from "@/components/ui/StatusBadge";
+import { effectiveCampaignStatus } from "@/types/campaign";
 import EmptyState from "@/components/ui/EmptyState";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
@@ -63,14 +64,25 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
   const router = useRouter();
   const wallet = useWallet();
 
-  const { campaign, isLoading: isCampaignLoading, mutate: mutateCampaign } = useCampaign(campaignId);
+  const {
+    campaign,
+    isLoading: isCampaignLoading,
+    mutate: mutateCampaign,
+  } = useCampaign(campaignId);
   const { donations, isLoading: isDonationsLoading } = useDonations(campaignId);
-  const { submitProof, requestDisbursement, closeCampaign, isLoading: isActionLoading } = useManageCampaign();
+  const {
+    submitProof,
+    requestDisbursement,
+    closeCampaign,
+    isLoading: isActionLoading,
+  } = useManageCampaign();
 
   const now = Date.now();
 
   const [proofDialogOpen, setProofDialogOpen] = useState(false);
-  const [activeMilestoneIdx, setActiveMilestoneIdx] = useState<number | null>(null);
+  const [activeMilestoneIdx, setActiveMilestoneIdx] = useState<number | null>(
+    null,
+  );
   const [proofUri, setProofUri] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
@@ -82,7 +94,11 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
 
   // Redirect if not the creator
   useEffect(() => {
-    if (campaign && wallet.publicKey && campaign.creator !== wallet.publicKey.toBase58()) {
+    if (
+      campaign &&
+      wallet.publicKey &&
+      campaign.creator !== wallet.publicKey.toBase58()
+    ) {
       router.push(`/campaigns/${campaignId}`);
     }
   }, [campaign, wallet.publicKey, campaignId, router]);
@@ -109,15 +125,19 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
 
   const releasedSol = campaign.milestones
     ? campaign.milestones.reduce(
-        (acc, curr) => acc + ("released" in curr.status ? parseFloat(curr.targetAmount) : 0),
-        0
+        (acc, curr) =>
+          acc + ("Released" in curr.status ? parseFloat(curr.targetAmount) : 0),
+        0,
       ) / LAMPORTS_PER_SOL
     : 0;
 
   const escrowSol = Math.max(0, currentSol - releasedSol);
 
   const deadlineDate = new Date(parseInt(campaign.deadline) * 1000);
-  const daysLeft = Math.max(0, Math.ceil((deadlineDate.getTime() - now) / (1000 * 3600 * 24)));
+  const daysLeft = Math.max(
+    0,
+    Math.ceil((deadlineDate.getTime() - now) / (1000 * 3600 * 24)),
+  );
 
   // Milestone Actions Handlers
   const handleOpenProofDialog = (index: number) => {
@@ -128,7 +148,9 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
     setProofDialogOpen(true);
   };
 
-  const handleProofFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleProofFileChange = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -164,7 +186,9 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
       setProofDialogOpen(false);
       mutateCampaign();
     } catch (err: unknown) {
-      setActionError(err instanceof Error ? err.message : "Failed to submit proof");
+      setActionError(
+        err instanceof Error ? err.message : "Failed to submit proof",
+      );
     }
   };
 
@@ -179,11 +203,17 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
     setActionError(null);
 
     try {
-      await requestDisbursement(campaignId, activeMilestoneIdx, campaign.milestoneCount);
+      await requestDisbursement(
+        campaignId,
+        activeMilestoneIdx,
+        campaign.milestoneCount,
+      );
       setDisburseDialogOpen(false);
       mutateCampaign();
     } catch (err: unknown) {
-      setActionError(err instanceof Error ? err.message : "Failed to request disbursement");
+      setActionError(
+        err instanceof Error ? err.message : "Failed to request disbursement",
+      );
     }
   };
 
@@ -196,7 +226,9 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
       setCloseDialogOpen(false);
       mutateCampaign();
     } catch (err: unknown) {
-      setActionError(err instanceof Error ? err.message : "Failed to close campaign");
+      setActionError(
+        err instanceof Error ? err.message : "Failed to close campaign",
+      );
     }
   };
 
@@ -204,31 +236,74 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
     <Container maxWidth="lg" sx={{ py: 6 }}>
       {/* Back navigation */}
       <Box sx={{ mb: 4 }}>
-        <Link href="/dashboard" passHref style={{ textDecoration: "none", color: "inherit" }}>
-          <Button startIcon={<ArrowBackIcon />} sx={{ fontWeight: 700, textTransform: "none" }}>
+        <Link
+          href="/dashboard"
+          passHref
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          <Button
+            startIcon={<ArrowBackIcon />}
+            sx={{ fontWeight: 700, textTransform: "none" }}
+          >
             {t("backToDashboard")}
           </Button>
         </Link>
       </Box>
 
       {/* Campaign Header */}
-      <Card variant="outlined" sx={{ borderRadius: 4, borderColor: "divider", mb: 4 }}>
+      <Card
+        variant="outlined"
+        sx={{ borderRadius: 4, borderColor: "divider", mb: 4 }}
+      >
         <CardContent sx={{ p: 4 }}>
-          <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, justifyContent: "space-between", alignItems: { xs: "flex-start", sm: "center" }, gap: 2, mb: 3 }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
+              justifyContent: "space-between",
+              alignItems: { xs: "flex-start", sm: "center" },
+              gap: 2,
+              mb: 3,
+            }}
+          >
             <Box>
-              <Stack direction="row" spacing={1.5} sx={{ alignItems: "center", mb: 1 }}>
-                <Typography variant="h4" sx={{ fontWeight: 900, fontFamily: "var(--font-plus-jakarta-sans)" }}>
+              <Stack
+                direction="row"
+                spacing={1.5}
+                sx={{ alignItems: "center", mb: 1 }}
+              >
+                <Typography
+                  variant="h4"
+                  sx={{
+                    fontWeight: 900,
+                    fontFamily: "var(--font-plus-jakarta-sans)",
+                  }}
+                >
                   {campaign.title}
                 </Typography>
-                <StatusBadge status={campaign.status} />
+                <StatusBadge
+                  status={{ [effectiveCampaignStatus(campaign)]: {} }}
+                />
               </Stack>
-              <Typography variant="caption" color="text.secondary" sx={{ fontFamily: "monospace", wordBreak: "break-all" }}>
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{ fontFamily: "monospace", wordBreak: "break-all" }}
+              >
                 PDA: {campaign.pubkey}
               </Typography>
             </Box>
 
-            <Link href={`/campaigns/${campaignId}`} passHref style={{ textDecoration: "none" }}>
-              <Button variant="outlined" startIcon={<VisibilityIcon />} sx={{ borderRadius: 2, textTransform: "none", fontWeight: 700 }}>
+            <Link
+              href={`/campaigns/${campaignId}`}
+              passHref
+              style={{ textDecoration: "none" }}
+            >
+              <Button
+                variant="outlined"
+                startIcon={<VisibilityIcon />}
+                sx={{ borderRadius: 2, textTransform: "none", fontWeight: 700 }}
+              >
                 {t("btnView")}
               </Button>
             </Link>
@@ -240,17 +315,29 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
           <Grid container spacing={3}>
             <Grid size={{ xs: 12, sm: 3 }}>
               <Box>
-                <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700 }}>
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{ fontWeight: 700 }}
+                >
                   {t("escrowBalance")}
                 </Typography>
-                <Typography variant="h5" color="primary.main" sx={{ fontWeight: 800, mt: 0.5 }}>
+                <Typography
+                  variant="h5"
+                  color="primary.main"
+                  sx={{ fontWeight: 800, mt: 0.5 }}
+                >
                   {escrowSol.toLocaleString()} SOL
                 </Typography>
               </Box>
             </Grid>
             <Grid size={{ xs: 12, sm: 3 }}>
               <Box>
-                <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700 }}>
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{ fontWeight: 700 }}
+                >
                   Total Raised
                 </Typography>
                 <Typography variant="h5" sx={{ fontWeight: 800, mt: 0.5 }}>
@@ -260,7 +347,11 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
             </Grid>
             <Grid size={{ xs: 12, sm: 3 }}>
               <Box>
-                <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700 }}>
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{ fontWeight: 700 }}
+                >
                   Target Goal
                 </Typography>
                 <Typography variant="h5" sx={{ fontWeight: 800, mt: 0.5 }}>
@@ -270,7 +361,11 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
             </Grid>
             <Grid size={{ xs: 12, sm: 3 }}>
               <Box>
-                <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700 }}>
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{ fontWeight: 700 }}
+                >
                   Time Remaining
                 </Typography>
                 <Typography variant="h5" sx={{ fontWeight: 800, mt: 0.5 }}>
@@ -285,7 +380,10 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
       <Grid container spacing={4}>
         {/* Milestone management */}
         <Grid size={{ xs: 12, md: 8 }}>
-          <Card variant="outlined" sx={{ borderRadius: 4, borderColor: "divider", mb: 4 }}>
+          <Card
+            variant="outlined"
+            sx={{ borderRadius: 4, borderColor: "divider", mb: 4 }}
+          >
             <CardContent sx={{ p: 4 }}>
               <Typography variant="h5" sx={{ fontWeight: 800, mb: 1 }}>
                 {t("disbursementTitle")}
@@ -307,55 +405,107 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
                         mb: 2,
                         borderRadius: 3,
                         borderColor: "divider",
-                        backgroundColor: "released" in m.status
-                          ? "rgba(0, 240, 181, 0.02)"
-                          : "background.paper",
+                        backgroundColor:
+                          "Released" in m.status
+                            ? "rgba(0, 240, 181, 0.02)"
+                            : "background.paper",
                       }}
                     >
-                      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 2 }}>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "flex-start",
+                          flexWrap: "wrap",
+                          gap: 2,
+                        }}
+                      >
                         <Box>
-                          <Typography variant="subtitle1" sx={{ fontWeight: 800, mb: 0.5 }}>
+                          <Typography
+                            variant="subtitle1"
+                            sx={{ fontWeight: 800, mb: 0.5 }}
+                          >
                             Milestone {idx + 1}: {m.title}
                           </Typography>
-                          <Typography variant="body2" sx={{ fontWeight: 700, color: "text.secondary" }}>
+                          <Typography
+                            variant="body2"
+                            sx={{ fontWeight: 700, color: "text.secondary" }}
+                          >
                             Amount: {mAmount.toLocaleString()} SOL
                           </Typography>
                           {m.proofUri && (
                             <MuiLink
-                              href={m.proofUri.replace("ipfs://", "https://gateway.pinata.cloud/ipfs/")}
+                              href={m.proofUri.replace(
+                                "ipfs://",
+                                "https://gateway.pinata.cloud/ipfs/",
+                              )}
                               target="_blank"
                               rel="noopener"
                               variant="body2"
-                              sx={{ display: "block", mt: 1, textDecoration: "none", color: "primary.main", fontWeight: 700 }}
+                              sx={{
+                                display: "block",
+                                mt: 1,
+                                textDecoration: "none",
+                                color: "primary.main",
+                                fontWeight: 700,
+                              }}
                             >
                               View Spending Proof (IPFS)
                             </MuiLink>
                           )}
                         </Box>
 
-                        <Box sx={{ textAlign: { xs: "left", sm: "right" }, minWidth: 120 }}>
+                        <Box
+                          sx={{
+                            textAlign: { xs: "left", sm: "right" },
+                            minWidth: 120,
+                          }}
+                        >
                           <Box sx={{ mb: 1.5 }}>
-                            <Typography variant="caption" color="text.secondary" sx={{ display: "block", fontWeight: 700 }}>
+                            <Typography
+                              variant="caption"
+                              color="text.secondary"
+                              sx={{ display: "block", fontWeight: 700 }}
+                            >
                               STATUS
                             </Typography>
-                            {"pending" in m.status && (
-                              <Chip label={t("pending")} color="warning" size="small" sx={{ borderRadius: 1, fontWeight: 700 }} />
+                            {"Pending" in m.status && (
+                              <Chip
+                                label={t("pending")}
+                                color="warning"
+                                size="small"
+                                sx={{ borderRadius: 1, fontWeight: 700 }}
+                              />
                             )}
                             {"proofSubmitted" in m.status && (
-                              <Chip label={t("proofSubmitted")} color="info" size="small" sx={{ borderRadius: 1, fontWeight: 700 }} />
+                              <Chip
+                                label={t("proofSubmitted")}
+                                color="info"
+                                size="small"
+                                sx={{ borderRadius: 1, fontWeight: 700 }}
+                              />
                             )}
-                            {"released" in m.status && (
-                              <Chip label={t("released")} color="success" size="small" sx={{ borderRadius: 1, fontWeight: 700 }} />
+                            {"Released" in m.status && (
+                              <Chip
+                                label={t("released")}
+                                color="success"
+                                size="small"
+                                sx={{ borderRadius: 1, fontWeight: 700 }}
+                              />
                             )}
                           </Box>
 
                           {/* Action Buttons based on status */}
-                          {"pending" in m.status && (
+                          {"Pending" in m.status && (
                             <Button
                               variant="outlined"
                               size="small"
                               onClick={() => handleOpenProofDialog(m.index)}
-                              sx={{ borderRadius: 1.5, textTransform: "none", fontWeight: 700 }}
+                              sx={{
+                                borderRadius: 1.5,
+                                textTransform: "none",
+                                fontWeight: 700,
+                              }}
                             >
                               {t("btnUploadProof")}
                             </Button>
@@ -367,16 +517,37 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
                               color="primary"
                               size="small"
                               onClick={() => handleOpenDisburseDialog(m.index)}
-                              sx={{ borderRadius: 1.5, textTransform: "none", fontWeight: 700 }}
+                              sx={{
+                                borderRadius: 1.5,
+                                textTransform: "none",
+                                fontWeight: 700,
+                              }}
                             >
                               {t("btnRequestDisburse")}
                             </Button>
                           )}
 
-                          {"released" in m.status && (
-                            <Stack direction="row" spacing={0.5} sx={{ alignItems: "center", justifyContent: { xs: "flex-start", sm: "flex-end" } }}>
-                              <CheckCircleIcon color="success" fontSize="small" />
-                              <Typography variant="body2" color="success.main" sx={{ fontWeight: 700 }}>
+                          {"Released" in m.status && (
+                            <Stack
+                              direction="row"
+                              spacing={0.5}
+                              sx={{
+                                alignItems: "center",
+                                justifyContent: {
+                                  xs: "flex-start",
+                                  sm: "flex-end",
+                                },
+                              }}
+                            >
+                              <CheckCircleIcon
+                                color="success"
+                                fontSize="small"
+                              />
+                              <Typography
+                                variant="body2"
+                                color="success.main"
+                                sx={{ fontWeight: 700 }}
+                              >
                                 Released
                               </Typography>
                             </Stack>
@@ -394,7 +565,10 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
         {/* Side columns: Donations + Danger Zone */}
         <Grid size={{ xs: 12, md: 4 }}>
           {/* Donations activity */}
-          <Card variant="outlined" sx={{ borderRadius: 4, borderColor: "divider", mb: 4 }}>
+          <Card
+            variant="outlined"
+            sx={{ borderRadius: 4, borderColor: "divider", mb: 4 }}
+          >
             <CardContent sx={{ p: 4 }}>
               <Typography variant="h6" sx={{ fontWeight: 800, mb: 3 }}>
                 {t("recentDonations")}
@@ -414,7 +588,9 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
                 <List disablePadding>
                   {donations.slice(0, 10).map((d) => {
                     const amount = parseFloat(d.amount) / LAMPORTS_PER_SOL;
-                    const date = new Date(parseInt(d.timestamp) * 1000).toLocaleDateString();
+                    const date = new Date(
+                      parseInt(d.timestamp) * 1000,
+                    ).toLocaleDateString();
                     return (
                       <ListItem
                         key={d.pubkey}
@@ -428,13 +604,21 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
                       >
                         <ListItemText
                           primary={
-                            <Typography variant="body2" sx={{ fontWeight: 700 }}>
+                            <Typography
+                              variant="body2"
+                              sx={{ fontWeight: 700 }}
+                            >
                               {amount} SOL
                             </Typography>
                           }
                           secondary={
-                            <Typography variant="caption" color="text.secondary" sx={{ fontFamily: "monospace" }}>
-                              {d.donor.slice(0, 4)}...{d.donor.slice(-4)} · {date}
+                            <Typography
+                              variant="caption"
+                              color="text.secondary"
+                              sx={{ fontFamily: "monospace" }}
+                            >
+                              {d.donor.slice(0, 4)}...{d.donor.slice(-4)} ·{" "}
+                              {date}
                             </Typography>
                           }
                         />
@@ -447,9 +631,27 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
           </Card>
 
           {/* Danger zone */}
-          <Card variant="outlined" sx={{ borderRadius: 4, borderColor: "error.light", overflow: "hidden" }}>
-            <Box sx={{ backgroundColor: "rgba(239, 83, 80, 0.04)", p: 3, borderBottom: "1px solid", borderColor: "error.light" }}>
-              <Stack direction="row" spacing={1} sx={{ alignItems: "center", color: "error.main" }}>
+          <Card
+            variant="outlined"
+            sx={{
+              borderRadius: 4,
+              borderColor: "error.light",
+              overflow: "hidden",
+            }}
+          >
+            <Box
+              sx={{
+                backgroundColor: "rgba(239, 83, 80, 0.04)",
+                p: 3,
+                borderBottom: "1px solid",
+                borderColor: "error.light",
+              }}
+            >
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{ alignItems: "center", color: "error.main" }}
+              >
                 <WarningAmberIcon />
                 <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>
                   {t("closeCampaignTitle")}
@@ -457,22 +659,33 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
               </Stack>
             </Box>
             <CardContent sx={{ p: 3 }}>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 2.5 }}>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ mb: 2.5 }}
+              >
                 {t("closeCampaignDesc")}
               </Typography>
               <Button
                 variant="outlined"
                 color="error"
                 fullWidth
-                disabled={"closed" in campaign.status}
+                disabled={"Closed" in campaign.status}
                 onClick={() => {
                   setActionError(null);
                   setConfirmTitle("");
                   setCloseDialogOpen(true);
                 }}
-                sx={{ py: 1, borderRadius: 2, textTransform: "none", fontWeight: 700 }}
+                sx={{
+                  py: 1,
+                  borderRadius: 2,
+                  textTransform: "none",
+                  fontWeight: 700,
+                }}
               >
-                {"closed" in campaign.status ? "Campaign Closed" : t("closeBtn")}
+                {"Closed" in campaign.status
+                  ? "Campaign Closed"
+                  : t("closeBtn")}
               </Button>
             </CardContent>
           </Card>
@@ -499,16 +712,36 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
             {t("proofDialogDesc")}
           </Typography>
 
-          {uploadError && <Alert severity="error" sx={{ mb: 2, borderRadius: 2 }}>{uploadError}</Alert>}
-          {actionError && <Alert severity="error" sx={{ mb: 2, borderRadius: 2 }}>{actionError}</Alert>}
+          {uploadError && (
+            <Alert severity="error" sx={{ mb: 2, borderRadius: 2 }}>
+              {uploadError}
+            </Alert>
+          )}
+          {actionError && (
+            <Alert severity="error" sx={{ mb: 2, borderRadius: 2 }}>
+              {actionError}
+            </Alert>
+          )}
 
           {proofUri ? (
-            <Box sx={{ border: "1px solid", borderColor: "divider", borderRadius: 3, p: 2, textAlign: "center" }}>
+            <Box
+              sx={{
+                border: "1px solid",
+                borderColor: "divider",
+                borderRadius: 3,
+                p: 2,
+                textAlign: "center",
+              }}
+            >
               <CheckCircleIcon color="success" sx={{ fontSize: 40, mb: 1 }} />
               <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 0.5 }}>
                 {t("uploadSuccess")}
               </Typography>
-              <Typography variant="caption" color="text.secondary" sx={{ wordBreak: "break-all", display: "block" }}>
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{ wordBreak: "break-all", display: "block" }}
+              >
                 IPFS: {proofUri}
               </Typography>
             </Box>
@@ -535,10 +768,17 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
                 </Stack>
               ) : (
                 <>
-                  <CloudUploadIcon sx={{ fontSize: 40, color: "text.secondary" }} />
+                  <CloudUploadIcon
+                    sx={{ fontSize: 40, color: "text.secondary" }}
+                  />
                   <Button component="label" variant="contained" size="small">
                     {t("uploadProofBtn")}
-                    <input type="file" accept="image/*,application/pdf" hidden onChange={handleProofFileChange} />
+                    <input
+                      type="file"
+                      accept="image/*,application/pdf"
+                      hidden
+                      onChange={handleProofFileChange}
+                    />
                   </Button>
                   <Typography variant="caption" color="text.secondary">
                     PDF or Image up to 10MB
@@ -563,7 +803,9 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
             color="primary"
             disabled={!proofUri || isActionLoading}
             onClick={handleSubmitProof}
-            startIcon={isActionLoading && <CircularProgress size={16} color="inherit" />}
+            startIcon={
+              isActionLoading && <CircularProgress size={16} color="inherit" />
+            }
             sx={{ px: 3, borderRadius: 2, fontWeight: 700 }}
           >
             {t("submitProofBtn")}
@@ -590,11 +832,19 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
           {activeMilestoneIdx !== null && campaign.milestones && (
             <Typography variant="body2" color="text.secondary">
               {t("disburseDialogDesc", {
-                amount: (parseFloat(campaign.milestones[activeMilestoneIdx].targetAmount) / LAMPORTS_PER_SOL).toFixed(3),
+                amount: (
+                  parseFloat(
+                    campaign.milestones[activeMilestoneIdx].targetAmount,
+                  ) / LAMPORTS_PER_SOL
+                ).toFixed(3),
               })}
             </Typography>
           )}
-          {actionError && <Alert severity="error" sx={{ mt: 2, borderRadius: 2 }}>{actionError}</Alert>}
+          {actionError && (
+            <Alert severity="error" sx={{ mt: 2, borderRadius: 2 }}>
+              {actionError}
+            </Alert>
+          )}
         </DialogContent>
         <DialogActions sx={{ p: 0, gap: 1.5 }}>
           <Button
@@ -611,7 +861,9 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
             color="primary"
             disabled={isActionLoading}
             onClick={handleConfirmDisburse}
-            startIcon={isActionLoading && <CircularProgress size={16} color="inherit" />}
+            startIcon={
+              isActionLoading && <CircularProgress size={16} color="inherit" />
+            }
             sx={{ px: 3, borderRadius: 2, fontWeight: 700 }}
           >
             {t("confirmDisburseBtn")}
@@ -638,7 +890,20 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
             {t("closeDialogDesc")}
           </Typography>
-          <Typography variant="body2" sx={{ fontWeight: 700, mb: 2, color: "text.primary", p: 1, border: "1px solid", borderColor: "divider", borderRadius: 1.5, backgroundColor: "background.default", textAlign: "center" }}>
+          <Typography
+            variant="body2"
+            sx={{
+              fontWeight: 700,
+              mb: 2,
+              color: "text.primary",
+              p: 1,
+              border: "1px solid",
+              borderColor: "divider",
+              borderRadius: 1.5,
+              backgroundColor: "background.default",
+              textAlign: "center",
+            }}
+          >
             {campaign.title}
           </Typography>
 
@@ -650,7 +915,11 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
             disabled={isActionLoading}
           />
 
-          {actionError && <Alert severity="error" sx={{ mt: 2, borderRadius: 2 }}>{actionError}</Alert>}
+          {actionError && (
+            <Alert severity="error" sx={{ mt: 2, borderRadius: 2 }}>
+              {actionError}
+            </Alert>
+          )}
         </DialogContent>
         <DialogActions sx={{ p: 0, gap: 1.5 }}>
           <Button
@@ -667,7 +936,9 @@ function ManageCampaignContent({ campaignId }: { campaignId: string }) {
             color="error"
             disabled={confirmTitle !== campaign.title || isActionLoading}
             onClick={handleCloseCampaign}
-            startIcon={isActionLoading && <CircularProgress size={16} color="inherit" />}
+            startIcon={
+              isActionLoading && <CircularProgress size={16} color="inherit" />
+            }
             sx={{ px: 3, borderRadius: 2, fontWeight: 700 }}
           >
             {t("confirmCloseBtn")}

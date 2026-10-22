@@ -4,7 +4,7 @@ import { IDL } from "@/idl/provify_contract";
 
 export const PROGRAM_ID = new PublicKey(
   process.env.NEXT_PUBLIC_PROGRAM_ID ??
-    "7px9KgeAgyrx8juwhcHfhzRc6fbkMT1gdMUtQpaDue7W"
+    "7px9KgeAgyrx8juwhcHfhzRc6fbkMT1gdMUtQpaDue7W",
 );
 
 /**
@@ -19,12 +19,12 @@ export function getProgram(
     publicKey: PublicKey;
     signTransaction: (...args: unknown[]) => Promise<unknown>;
     signAllTransactions: (...args: unknown[]) => Promise<unknown>;
-  }
+  },
 ): Program {
   const provider = new AnchorProvider(
     connection,
     wallet as never,
-    AnchorProvider.defaultOptions()
+    AnchorProvider.defaultOptions(),
   );
 
   return new Program(IDL as Idl, provider);

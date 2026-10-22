@@ -20,7 +20,7 @@ export function useManageCampaign() {
   const submitProof = async (
     campaignId: string,
     milestoneIndex: number,
-    proofUri: string
+    proofUri: string,
   ): Promise<string> => {
     const creatorPubkey = checkWallet();
     setIsLoading(true);
@@ -39,7 +39,7 @@ export function useManageCampaign() {
           campaignPubkey.toBuffer(),
           Buffer.from([milestoneIndex]),
         ],
-        PROGRAM_ID
+        PROGRAM_ID,
       );
 
       const signature = await program.methods
@@ -57,14 +57,15 @@ export function useManageCampaign() {
           signature,
           ...latestBlockhash,
         },
-        "confirmed"
+        "confirmed",
       );
 
       setTxHash(signature);
       return signature;
     } catch (err: unknown) {
       console.error("Submit proof failed:", err);
-      const errorMsg = err instanceof Error ? err.message : "Submit proof failed";
+      const errorMsg =
+        err instanceof Error ? err.message : "Submit proof failed";
       setError(errorMsg);
       throw err;
     } finally {
@@ -75,7 +76,7 @@ export function useManageCampaign() {
   const requestDisbursement = async (
     campaignId: string,
     milestoneIndex: number,
-    milestoneCount: number
+    milestoneCount: number,
   ): Promise<string> => {
     const creatorPubkey = checkWallet();
     setIsLoading(true);
@@ -94,7 +95,7 @@ export function useManageCampaign() {
           campaignPubkey.toBuffer(),
           Buffer.from([milestoneIndex]),
         ],
-        PROGRAM_ID
+        PROGRAM_ID,
       );
 
       // Derive all other milestone PDAs to pass as remaining accounts
@@ -107,7 +108,7 @@ export function useManageCampaign() {
               campaignPubkey.toBuffer(),
               Buffer.from([i]),
             ],
-            PROGRAM_ID
+            PROGRAM_ID,
           );
           remainingAccounts.push({
             pubkey: otherMilestonePda,
@@ -134,14 +135,15 @@ export function useManageCampaign() {
           signature,
           ...latestBlockhash,
         },
-        "confirmed"
+        "confirmed",
       );
 
       setTxHash(signature);
       return signature;
     } catch (err: unknown) {
       console.error("Disbursement request failed:", err);
-      const errorMsg = err instanceof Error ? err.message : "Disbursement request failed";
+      const errorMsg =
+        err instanceof Error ? err.message : "Disbursement request failed";
       setError(errorMsg);
       throw err;
     } finally {
@@ -175,14 +177,15 @@ export function useManageCampaign() {
           signature,
           ...latestBlockhash,
         },
-        "confirmed"
+        "confirmed",
       );
 
       setTxHash(signature);
       return signature;
     } catch (err: unknown) {
       console.error("Close campaign failed:", err);
-      const errorMsg = err instanceof Error ? err.message : "Close campaign failed";
+      const errorMsg =
+        err instanceof Error ? err.message : "Close campaign failed";
       setError(errorMsg);
       throw err;
     } finally {

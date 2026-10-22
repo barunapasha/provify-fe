@@ -7,10 +7,7 @@ export async function POST(request: NextRequest) {
     const file = formData.get("file");
 
     if (!file || !(file instanceof File)) {
-      return NextResponse.json(
-        { error: "No file provided" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
     const result = await pinata.upload.file(file);
@@ -23,7 +20,7 @@ export async function POST(request: NextRequest) {
     console.error("Upload error:", error);
     return NextResponse.json(
       { error: "Failed to upload file to IPFS" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

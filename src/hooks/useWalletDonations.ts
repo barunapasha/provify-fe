@@ -19,7 +19,7 @@ const DONOR_OFFSET = 40;
 const DONATION_ACCOUNT_SIZE = 89;
 
 async function fetchWalletDonations(
-  walletAddress: string
+  walletAddress: string,
 ): Promise<DonationWithCampaign[]> {
   if (!walletAddress) return [];
 
@@ -88,7 +88,7 @@ async function fetchWalletDonations(
 export function useWalletDonations(walletAddress: string | null) {
   const { data, error, isLoading, mutate } = useSWR(
     walletAddress ? `wallet-donations-${walletAddress}` : null,
-    () => fetchWalletDonations(walletAddress as string)
+    () => fetchWalletDonations(walletAddress as string),
   );
 
   return {

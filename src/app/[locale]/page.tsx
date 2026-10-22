@@ -21,7 +21,7 @@ import useSWR from "swr";
 import { useTranslations } from "next-intl";
 import CampaignCard from "@/components/ui/CampaignCard";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { Campaign } from "@/types/campaign";
+import { Campaign, effectiveCampaignStatus } from "@/types/campaign";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
@@ -42,19 +42,22 @@ export default function Home() {
 
   const totalSolLamports = campaigns.reduce(
     (acc, curr) => acc + (parseFloat(curr.currentAmount) || 0),
-    0
+    0,
   );
   const totalSol = totalSolLamports / LAMPORTS_PER_SOL;
 
   const totalDonors = campaigns.reduce(
     (acc, curr) => acc + (parseInt(curr.donationCount) || 0),
-    0
+    0,
   );
 
   // Get 3 most funded active campaigns
   const featured = campaigns
-    .filter((c) => "active" in c.status)
-    .sort((a, b) => (parseFloat(b.currentAmount) || 0) - (parseFloat(a.currentAmount) || 0))
+    .filter((c) => effectiveCampaignStatus(c) === "Active")
+    .sort(
+      (a, b) =>
+        (parseFloat(b.currentAmount) || 0) - (parseFloat(a.currentAmount) || 0),
+    )
     .slice(0, 3);
 
   const steps = [
@@ -106,16 +109,33 @@ export default function Home() {
                 >
                   {t("title")}
                 </Typography>
-                <Typography variant="body1" color="text.secondary" sx={{ fontSize: "1.15rem", maxWidth: 540 }}>
+                <Typography
+                  variant="body1"
+                  color="text.secondary"
+                  sx={{ fontSize: "1.15rem", maxWidth: 540 }}
+                >
                   {t("subtitle")}
                 </Typography>
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
-                  <Link href="/campaigns" passHref style={{ textDecoration: "none" }}>
-                    <Button variant="contained" color="primary" size="large" endIcon={<ArrowForwardIcon />}>
+                  <Link
+                    href="/campaigns"
+                    passHref
+                    style={{ textDecoration: "none" }}
+                  >
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      size="large"
+                      endIcon={<ArrowForwardIcon />}
+                    >
                       {t("ctaExplore")}
                     </Button>
                   </Link>
-                  <Link href="/create" passHref style={{ textDecoration: "none" }}>
+                  <Link
+                    href="/create"
+                    passHref
+                    style={{ textDecoration: "none" }}
+                  >
                     <Button variant="outlined" color="primary" size="large">
                       {t("ctaCreate")}
                     </Button>
@@ -130,15 +150,32 @@ export default function Home() {
       <Container maxWidth="lg" sx={{ mt: -6, position: "relative", zIndex: 2 }}>
         <Grid container spacing={3}>
           <Grid size={{ xs: 12, sm: 4 }}>
-            <Card sx={{ borderLeft: "4px solid", borderLeftColor: "primary.main" }}>
+            <Card
+              sx={{ borderLeft: "4px solid", borderLeftColor: "primary.main" }}
+            >
               <CardContent sx={{ p: 3 }}>
-                <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase" }}>
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{
+                    fontWeight: 700,
+                    letterSpacing: "0.05em",
+                    textTransform: "uppercase",
+                  }}
+                >
                   {t("statsCampaigns")}
                 </Typography>
                 {isLoading ? (
                   <Skeleton width={100} height={48} sx={{ mt: 1 }} />
                 ) : (
-                  <Typography variant="h3" sx={{ mt: 1, fontWeight: 800, fontFamily: "var(--font-syne)" }}>
+                  <Typography
+                    variant="h3"
+                    sx={{
+                      mt: 1,
+                      fontWeight: 800,
+                      fontFamily: "var(--font-syne)",
+                    }}
+                  >
                     {totalCampaigns}
                   </Typography>
                 )}
@@ -146,15 +183,35 @@ export default function Home() {
             </Card>
           </Grid>
           <Grid size={{ xs: 12, sm: 4 }}>
-            <Card sx={{ borderLeft: "4px solid", borderLeftColor: "secondary.main" }}>
+            <Card
+              sx={{
+                borderLeft: "4px solid",
+                borderLeftColor: "secondary.main",
+              }}
+            >
               <CardContent sx={{ p: 3 }}>
-                <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase" }}>
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{
+                    fontWeight: 700,
+                    letterSpacing: "0.05em",
+                    textTransform: "uppercase",
+                  }}
+                >
                   {t("statsSol")}
                 </Typography>
                 {isLoading ? (
                   <Skeleton width={140} height={48} sx={{ mt: 1 }} />
                 ) : (
-                  <Typography variant="h3" sx={{ mt: 1, fontWeight: 800, fontFamily: "var(--font-syne)" }}>
+                  <Typography
+                    variant="h3"
+                    sx={{
+                      mt: 1,
+                      fontWeight: 800,
+                      fontFamily: "var(--font-syne)",
+                    }}
+                  >
                     {totalSol.toLocaleString()} SOL
                   </Typography>
                 )}
@@ -162,15 +219,32 @@ export default function Home() {
             </Card>
           </Grid>
           <Grid size={{ xs: 12, sm: 4 }}>
-            <Card sx={{ borderLeft: "4px solid", borderLeftColor: "text.primary" }}>
+            <Card
+              sx={{ borderLeft: "4px solid", borderLeftColor: "text.primary" }}
+            >
               <CardContent sx={{ p: 3 }}>
-                <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase" }}>
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{
+                    fontWeight: 700,
+                    letterSpacing: "0.05em",
+                    textTransform: "uppercase",
+                  }}
+                >
                   {t("statsDonors")}
                 </Typography>
                 {isLoading ? (
                   <Skeleton width={100} height={48} sx={{ mt: 1 }} />
                 ) : (
-                  <Typography variant="h3" sx={{ mt: 1, fontWeight: 800, fontFamily: "var(--font-syne)" }}>
+                  <Typography
+                    variant="h3"
+                    sx={{
+                      mt: 1,
+                      fontWeight: 800,
+                      fontFamily: "var(--font-syne)",
+                    }}
+                  >
                     {totalDonors}
                   </Typography>
                 )}
@@ -181,7 +255,14 @@ export default function Home() {
       </Container>
 
       <Container maxWidth="lg" sx={{ mt: 10 }}>
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", mb: 4 }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-end",
+            mb: 4,
+          }}
+        >
           <Box>
             <Typography variant="h2" sx={{ fontSize: "2rem", mb: 1 }}>
               {t("featuredTitle")}
@@ -213,8 +294,18 @@ export default function Home() {
             ))}
           </Grid>
         ) : campaigns.length === 0 ? (
-          <Box sx={{ py: 6, textAlign: "center", border: "1px dashed", borderColor: "divider", borderRadius: 4 }}>
-            <Typography color="text.secondary">No campaigns found on-chain.</Typography>
+          <Box
+            sx={{
+              py: 6,
+              textAlign: "center",
+              border: "1px dashed",
+              borderColor: "divider",
+              borderRadius: 4,
+            }}
+          >
+            <Typography color="text.secondary">
+              No campaigns found on-chain.
+            </Typography>
           </Box>
         ) : (
           <Grid container spacing={3}>
@@ -260,8 +351,20 @@ export default function Home() {
                     {step.label}
                   </Typography>
                 </StepLabel>
-                <StepContent sx={{ borderLeft: "2px dashed", borderColor: "divider", ml: "21px", pl: 4, pb: 4 }}>
-                  <Typography variant="body2" color="text.secondary" sx={{ maxW: 500 }}>
+                <StepContent
+                  sx={{
+                    borderLeft: "2px dashed",
+                    borderColor: "divider",
+                    ml: "21px",
+                    pl: 4,
+                    pb: 4,
+                  }}
+                >
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ maxW: 500 }}
+                  >
                     {step.description}
                   </Typography>
                 </StepContent>

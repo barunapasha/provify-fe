@@ -59,7 +59,10 @@ export default function Navbar() {
       elevation={0}
     >
       <Container maxWidth="lg">
-        <Toolbar disableGutters sx={{ justifyContent: "space-between", height: 70 }}>
+        <Toolbar
+          disableGutters
+          sx={{ justifyContent: "space-between", height: 70 }}
+        >
           <Link href="/" passHref style={{ textDecoration: "none" }}>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <Typography
@@ -84,12 +87,25 @@ export default function Navbar() {
             </Box>
           </Link>
 
-          <Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center", gap: 3 }}>
+          <Box
+            sx={{
+              display: { xs: "none", md: "flex" },
+              alignItems: "center",
+              gap: 3,
+            }}
+          >
             {navItems.map((item) => (
-              <Link key={item.path} href={item.path} passHref style={{ textDecoration: "none" }}>
+              <Link
+                key={item.path}
+                href={item.path}
+                passHref
+                style={{ textDecoration: "none" }}
+              >
                 <Button
                   sx={{
-                    color: isActive(item.path) ? "primary.main" : "text.primary",
+                    color: isActive(item.path)
+                      ? "primary.main"
+                      : "text.primary",
                     fontWeight: isActive(item.path) ? 800 : 600,
                     fontSize: "0.95rem",
                     position: "relative",
@@ -113,7 +129,11 @@ export default function Navbar() {
           </Box>
 
           <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-            <IconButton onClick={toggleThemeMode} color="inherit" sx={{ color: "text.primary" }}>
+            <IconButton
+              onClick={toggleThemeMode}
+              color="inherit"
+              sx={{ color: "text.primary" }}
+            >
               {mode === "light" ? <DarkModeIcon /> : <LightModeIcon />}
             </IconButton>
             <ConnectButton />
@@ -155,13 +175,21 @@ export default function Navbar() {
         <List sx={{ px: 2 }}>
           {navItems.map((item) => (
             <ListItem key={item.path} disablePadding sx={{ mb: 1 }}>
-              <Link href={item.path} passHref style={{ textDecoration: "none", width: "100%" }}>
+              <Link
+                href={item.path}
+                passHref
+                style={{ textDecoration: "none", width: "100%" }}
+              >
                 <ListItemButton
                   onClick={handleDrawerToggle}
                   sx={{
                     borderRadius: 1,
-                    backgroundColor: isActive(item.path) ? "rgba(95, 60, 254, 0.04)" : "transparent",
-                    color: isActive(item.path) ? "primary.main" : "text.primary",
+                    backgroundColor: isActive(item.path)
+                      ? "rgba(95, 60, 254, 0.04)"
+                      : "transparent",
+                    color: isActive(item.path)
+                      ? "primary.main"
+                      : "text.primary",
                   }}
                 >
                   <ListItemText

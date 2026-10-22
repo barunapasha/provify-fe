@@ -27,6 +27,7 @@ import { useCreatorCampaigns } from "@/hooks/useCreatorCampaigns";
 import EmptyState from "@/components/ui/EmptyState";
 import ProgressBar from "@/components/ui/ProgressBar";
 import StatusBadge from "@/components/ui/StatusBadge";
+import { effectiveCampaignStatus } from "@/types/campaign";
 
 export default function CreatorDashboardPage() {
   return (
@@ -39,18 +40,22 @@ export default function CreatorDashboardPage() {
 function DashboardContent() {
   const t = useTranslations("dashboard");
   const { publicKey } = useWallet();
-  const { campaigns, isLoading } = useCreatorCampaigns(publicKey?.toBase58() ?? null);
+  const { campaigns, isLoading } = useCreatorCampaigns(
+    publicKey?.toBase58() ?? null,
+  );
   // eslint-disable-next-line react-hooks/purity
   const now = Date.now();
 
   const totalCampaigns = campaigns.length;
   const totalRaisedLamports = campaigns.reduce(
     (acc, curr) => acc + (parseFloat(curr.currentAmount) || 0),
-    0
+    0,
   );
   const totalRaisedSol = totalRaisedLamports / LAMPORTS_PER_SOL;
 
-  const activeCampaigns = campaigns.filter((c) => "active" in c.status).length;
+  const activeCampaigns = campaigns.filter(
+    (c) => effectiveCampaignStatus(c) === "Active",
+  ).length;
 
   return (
     <Container maxWidth="lg" sx={{ py: 6 }}>
@@ -74,8 +79,13 @@ function DashboardContent() {
 
       <Grid container spacing={3} sx={{ mb: 6 }}>
         <Grid size={{ xs: 12, sm: 4 }}>
-          <Card variant="outlined" sx={{ borderRadius: 3, borderColor: "divider" }}>
-            <CardContent sx={{ p: 3, display: "flex", alignItems: "center", gap: 2.5 }}>
+          <Card
+            variant="outlined"
+            sx={{ borderRadius: 3, borderColor: "divider" }}
+          >
+            <CardContent
+              sx={{ p: 3, display: "flex", alignItems: "center", gap: 2.5 }}
+            >
               <Box
                 sx={{
                   width: 50,
@@ -91,7 +101,11 @@ function DashboardContent() {
                 <DashboardIcon />
               </Box>
               <Box>
-                <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700 }}>
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{ fontWeight: 700 }}
+                >
                   {t("statsCampaigns")}
                 </Typography>
                 {isLoading ? (
@@ -107,8 +121,13 @@ function DashboardContent() {
         </Grid>
 
         <Grid size={{ xs: 12, sm: 4 }}>
-          <Card variant="outlined" sx={{ borderRadius: 3, borderColor: "divider" }}>
-            <CardContent sx={{ p: 3, display: "flex", alignItems: "center", gap: 2.5 }}>
+          <Card
+            variant="outlined"
+            sx={{ borderRadius: 3, borderColor: "divider" }}
+          >
+            <CardContent
+              sx={{ p: 3, display: "flex", alignItems: "center", gap: 2.5 }}
+            >
               <Box
                 sx={{
                   width: 50,
@@ -124,7 +143,11 @@ function DashboardContent() {
                 <AccountBalanceWalletIcon />
               </Box>
               <Box>
-                <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700 }}>
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{ fontWeight: 700 }}
+                >
                   {t("statsSOL")}
                 </Typography>
                 {isLoading ? (
@@ -140,8 +163,13 @@ function DashboardContent() {
         </Grid>
 
         <Grid size={{ xs: 12, sm: 4 }}>
-          <Card variant="outlined" sx={{ borderRadius: 3, borderColor: "divider" }}>
-            <CardContent sx={{ p: 3, display: "flex", alignItems: "center", gap: 2.5 }}>
+          <Card
+            variant="outlined"
+            sx={{ borderRadius: 3, borderColor: "divider" }}
+          >
+            <CardContent
+              sx={{ p: 3, display: "flex", alignItems: "center", gap: 2.5 }}
+            >
               <Box
                 sx={{
                   width: 50,
@@ -157,7 +185,11 @@ function DashboardContent() {
                 <CampaignIcon />
               </Box>
               <Box>
-                <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700 }}>
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{ fontWeight: 700 }}
+                >
                   {t("statsMilestones")}
                 </Typography>
                 {isLoading ? (
@@ -177,7 +209,10 @@ function DashboardContent() {
         <Grid container spacing={3}>
           {[1, 2].map((i) => (
             <Grid size={{ xs: 12, md: 6 }} key={i}>
-              <Card variant="outlined" sx={{ height: 260, borderRadius: 4, display: "flex" }}>
+              <Card
+                variant="outlined"
+                sx={{ height: 260, borderRadius: 4, display: "flex" }}
+              >
                 <Skeleton variant="rectangular" width="40%" height="100%" />
                 <CardContent sx={{ flexGrow: 1, p: 3 }}>
                   <Skeleton width="30%" height={24} sx={{ mb: 1 }} />
@@ -199,10 +234,14 @@ function DashboardContent() {
       ) : (
         <Grid container spacing={3}>
           {campaigns.map((campaign) => {
-            const current = parseFloat(campaign.currentAmount) / LAMPORTS_PER_SOL;
+            const current =
+              parseFloat(campaign.currentAmount) / LAMPORTS_PER_SOL;
             const target = parseFloat(campaign.targetAmount) / LAMPORTS_PER_SOL;
             const deadlineDate = new Date(parseInt(campaign.deadline) * 1000);
-            const daysLeft = Math.max(0, Math.ceil((deadlineDate.getTime() - now) / (1000 * 3600 * 24)));
+            const daysLeft = Math.max(
+              0,
+              Math.ceil((deadlineDate.getTime() - now) / (1000 * 3600 * 24)),
+            );
 
             return (
               <Grid size={{ xs: 12, md: 6 }} key={campaign.pubkey}>
@@ -219,7 +258,12 @@ function DashboardContent() {
                 >
                   <CardMedia
                     component="img"
-                    image={campaign.imageUri.replace("ipfs://", "https://gateway.pinata.cloud/ipfs/") || "/placeholder.jpg"}
+                    image={
+                      campaign.imageUri.replace(
+                        "ipfs://",
+                        "https://gateway.pinata.cloud/ipfs/",
+                      ) || "/placeholder.jpg"
+                    }
                     alt={campaign.title}
                     sx={{
                       width: { xs: "100%", sm: "40%" },
@@ -227,14 +271,32 @@ function DashboardContent() {
                       objectFit: "cover",
                     }}
                   />
-                  <CardContent sx={{ flexGrow: 1, p: 3, display: "flex", flexDirection: "column" }}>
-                    <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
+                  <CardContent
+                    sx={{
+                      flexGrow: 1,
+                      p: 3,
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        mb: 2,
+                      }}
+                    >
                       <Chip
                         label={campaign.category}
                         size="small"
                         sx={{ fontWeight: 700, borderRadius: 1 }}
                       />
-                      <StatusBadge status={campaign.status} />
+                      <StatusBadge
+                        status={{
+                          [effectiveCampaignStatus(campaign)]: {},
+                        }}
+                      />
                     </Box>
 
                     <Typography
@@ -251,9 +313,16 @@ function DashboardContent() {
 
                     <Box sx={{ mb: 3 }}>
                       <ProgressBar current={current} target={target} />
-                      <Box sx={{ display: "flex", justifyContent: "space-between", mt: 1 }}>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          mt: 1,
+                        }}
+                      >
                         <Typography variant="caption" color="text.secondary">
-                          Raised: <strong>{current.toLocaleString()} SOL</strong>
+                          Raised:{" "}
+                          <strong>{current.toLocaleString()} SOL</strong>
                         </Typography>
                         <Typography variant="caption" color="text.secondary">
                           {daysLeft > 0 ? `${daysLeft} days left` : "Ended"}
@@ -262,19 +331,32 @@ function DashboardContent() {
                     </Box>
 
                     <Stack direction="row" spacing={1.5} sx={{ mt: "auto" }}>
-                      <Link href={`/dashboard/${campaign.pubkey}`} passHref style={{ textDecoration: "none", flexGrow: 1 }}>
+                      <Link
+                        href={`/dashboard/${campaign.pubkey}`}
+                        passHref
+                        style={{ textDecoration: "none", flexGrow: 1 }}
+                      >
                         <Button
                           variant="contained"
                           color="primary"
                           fullWidth
                           size="small"
                           startIcon={<SettingsIcon />}
-                          sx={{ py: 1, borderRadius: 2, textTransform: "none", fontWeight: 700 }}
+                          sx={{
+                            py: 1,
+                            borderRadius: 2,
+                            textTransform: "none",
+                            fontWeight: 700,
+                          }}
                         >
                           {t("btnManage")}
                         </Button>
                       </Link>
-                      <Link href={`/campaigns/${campaign.pubkey}`} passHref style={{ textDecoration: "none" }}>
+                      <Link
+                        href={`/campaigns/${campaign.pubkey}`}
+                        passHref
+                        style={{ textDecoration: "none" }}
+                      >
                         <Button
                           variant="outlined"
                           color="inherit"

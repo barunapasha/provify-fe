@@ -44,7 +44,8 @@ export default class ErrorBoundary extends Component<Props, State> {
             sx={{ maxWidth: 500, width: "100%" }}
           >
             <AlertTitle>Rendering Error</AlertTitle>
-            {this.state.error?.message || "An unexpected error occurred in the UI."}
+            {this.state.error?.message ||
+              "An unexpected error occurred in the UI."}
           </Alert>
         </Box>
       );

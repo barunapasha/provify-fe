@@ -12,7 +12,12 @@ export default function TxBadge({ txHash }: TxBadgeProps) {
   const explorerUrl = `https://explorer.solana.com/tx/${txHash}?cluster=devnet`;
 
   return (
-    <Link href={explorerUrl} target="_blank" rel="noopener" sx={{ textDecoration: "none" }}>
+    <Link
+      href={explorerUrl}
+      target="_blank"
+      rel="noopener"
+      sx={{ textDecoration: "none" }}
+    >
       <Chip
         label={truncated}
         size="small"

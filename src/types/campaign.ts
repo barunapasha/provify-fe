@@ -1,5 +1,11 @@
-export type CampaignStatus = { active: Record<string, never> } | { completed: Record<string, never> } | { closed: Record<string, never> };
-export type MilestoneStatus = { pending: Record<string, never> } | { proofSubmitted: Record<string, never> } | { released: Record<string, never> };
+export type CampaignStatus =
+  | { active: Record<string, never> }
+  | { completed: Record<string, never> }
+  | { closed: Record<string, never> };
+export type MilestoneStatus =
+  | { pending: Record<string, never> }
+  | { proofSubmitted: Record<string, never> }
+  | { released: Record<string, never> };
 
 export interface Campaign {
   pubkey: string;
@@ -41,4 +47,38 @@ export interface Donation {
 
 export interface DonationWithCampaign extends Donation {
   campaignTitle: string;
+}
+
+/**
+ * Effective campaign status for display:
+ * an Active campaign whose deadline passed or whose target was reached
+ * is treated as done, even if the on-chain state hasn't been updated yet
+ * (the contract evaluates lazily).
+ */
+export function effectiveCampaignStatus(
+  campaign: Pick<
+    Campaign,
+    "status" | "deadline" | "targetAmount" | "currentAmount"
+  >,
+): "Active" | "Completed" | "Closed" {
+  if ("Active" in campaign.status) {
+    const nowSec = Math.floor(Date.now() / 1000);
+    if (nowSec >= parseInt(campaign.deadline)) return "Closed";
+    if (BigInt(campaign.currentAmount) >= BigInt(campaign.targetAmount))
+      return "Completed";
+  }
+  return "Active" in campaign.status
+    ? "Active"
+    : "Completed" in campaign.status
+      ? "Completed"
+      : "Closed";
+}
+
+export function isCampaignDonatable(
+  campaign: Pick<
+    Campaign,
+    "status" | "deadline" | "targetAmount" | "currentAmount"
+  >,
+): boolean {
+  return effectiveCampaignStatus(campaign) === "Active";
 }

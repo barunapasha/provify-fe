@@ -13,7 +13,9 @@ interface ThemeModeContextProps {
   toggleThemeMode: () => void;
 }
 
-const ThemeModeContext = createContext<ThemeModeContextProps | undefined>(undefined);
+const ThemeModeContext = createContext<ThemeModeContextProps | undefined>(
+  undefined,
+);
 
 export function useThemeMode() {
   const context = useContext(ThemeModeContext);
@@ -49,7 +51,13 @@ export default function ThemeRegistry({
       <ThemeModeContext.Provider value={{ mode, toggleThemeMode }}>
         <ThemeProvider theme={activeTheme}>
           <CssBaseline />
-          <Box sx={{ position: "relative", minHeight: "100vh", backgroundColor: "background.default" }}>
+          <Box
+            sx={{
+              position: "relative",
+              minHeight: "100vh",
+              backgroundColor: "background.default",
+            }}
+          >
             {mode === "dark" && (
               <Box
                 sx={{
@@ -62,10 +70,21 @@ export default function ThemeRegistry({
                   pointerEvents: "none",
                 }}
               >
-                <Silk speed={5} scale={0.7} color="#545357" noiseIntensity={1} />
+                <Silk
+                  speed={5}
+                  scale={0.7}
+                  color="#545357"
+                  noiseIntensity={1}
+                />
               </Box>
             )}
-            <Box sx={{ position: "relative", zIndex: 1, backgroundColor: "transparent" }}>
+            <Box
+              sx={{
+                position: "relative",
+                zIndex: 1,
+                backgroundColor: "transparent",
+              }}
+            >
               {children}
             </Box>
           </Box>

@@ -11,11 +11,7 @@ export interface MilestoneInput {
 }
 
 export type CreateCampaignStatus =
-  | "idle"
-  | "creating_campaign"
-  | "creating_milestones"
-  | "success"
-  | "error";
+  "idle" | "creating_campaign" | "creating_milestones" | "success" | "error";
 
 export function useCreateCampaign() {
   const wallet = useWallet();
@@ -33,7 +29,7 @@ export function useCreateCampaign() {
     category: string,
     targetAmountSol: number,
     deadlineUnix: number,
-    milestones: MilestoneInput[]
+    milestones: MilestoneInput[],
   ): Promise<string> => {
     if (!wallet.publicKey || !wallet.signTransaction) {
       throw new Error("Wallet not connected");
@@ -52,16 +48,14 @@ export function useCreateCampaign() {
       const program = getProgram(connection, wallet as any);
 
       // Convert target amount to lamports
-      const targetAmountLamports = new BN(Math.round(targetAmountSol * 1_000_000_000));
+      const targetAmountLamports = new BN(
+        Math.round(targetAmountSol * 1_000_000_000),
+      );
 
       // Derive Campaign PDA: seeds = [b"campaign", creator, title]
       const [campaignPdaKey] = PublicKey.findProgramAddressSync(
-        [
-          Buffer.from("campaign"),
-          creatorPubkey.toBuffer(),
-          Buffer.from(title),
-        ],
-        PROGRAM_ID
+        [Buffer.from("campaign"), creatorPubkey.toBuffer(), Buffer.from(title)],
+        PROGRAM_ID,
       );
 
       // 1. Create Campaign
@@ -73,7 +67,7 @@ export function useCreateCampaign() {
           category,
           targetAmountLamports,
           new BN(deadlineUnix),
-          milestones.length
+          milestones.length,
         )
         .accounts({
           creator: creatorPubkey,
@@ -88,7 +82,7 @@ export function useCreateCampaign() {
           signature: campaignSignature,
           ...latestBlockhash,
         },
-        "confirmed"
+        "confirmed",
       );
 
       setTxHash(campaignSignature);
@@ -99,7 +93,9 @@ export function useCreateCampaign() {
       for (let i = 0; i < milestones.length; i++) {
         setCurrentMilestone(i + 1);
         const milestone = milestones[i];
-        const milestoneTargetLamports = new BN(Math.round(milestone.targetAmountSol * 1_000_000_000));
+        const milestoneTargetLamports = new BN(
+          Math.round(milestone.targetAmountSol * 1_000_000_000),
+        );
 
         // Derive Milestone PDA: seeds = [b"milestone", campaign, index]
         const [milestonePdaKey] = PublicKey.findProgramAddressSync(
@@ -108,7 +104,7 @@ export function useCreateCampaign() {
             campaignPdaKey.toBuffer(),
             Buffer.from([i]),
           ],
-          PROGRAM_ID
+          PROGRAM_ID,
         );
 
         const milestoneSignature = await program.methods
@@ -127,7 +123,7 @@ export function useCreateCampaign() {
             signature: milestoneSignature,
             ...blockhash,
           },
-          "confirmed"
+          "confirmed",
         );
       }
 
@@ -135,7 +131,8 @@ export function useCreateCampaign() {
       return campaignPdaKey.toBase58();
     } catch (err: unknown) {
       console.error("Campaign creation failed:", err);
-      const errorMsg = err instanceof Error ? err.message : "Transaction failed";
+      const errorMsg =
+        err instanceof Error ? err.message : "Transaction failed";
       setError(errorMsg);
       setStatus("error");
       throw err;

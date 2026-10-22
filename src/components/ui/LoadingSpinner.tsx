@@ -7,7 +7,9 @@ interface LoadingSpinnerProps {
   message?: string;
 }
 
-export default function LoadingSpinner({ message = "Loading on-chain data..." }: LoadingSpinnerProps) {
+export default function LoadingSpinner({
+  message = "Loading on-chain data...",
+}: LoadingSpinnerProps) {
   return (
     <Box
       sx={{
@@ -20,7 +22,11 @@ export default function LoadingSpinner({ message = "Loading on-chain data..." }:
       }}
     >
       <CircularProgress size={40} thickness={4} color="primary" />
-      <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
+      <Typography
+        variant="body2"
+        color="text.secondary"
+        sx={{ fontWeight: 500 }}
+      >
         <DecryptedText text={message} animateOn="view" sequential />
       </Typography>
     </Box>

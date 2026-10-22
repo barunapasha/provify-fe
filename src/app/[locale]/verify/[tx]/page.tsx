@@ -59,8 +59,15 @@ function VerifyTxContent({ txSignature }: { txSignature: string }) {
     return (
       <Container maxWidth="md" sx={{ py: 8 }}>
         <Box sx={{ mb: 4 }}>
-          <Link href="/verify" passHref style={{ textDecoration: "none", color: "inherit" }}>
-            <Button startIcon={<ArrowBackIcon />} sx={{ fontWeight: 700, textTransform: "none" }}>
+          <Link
+            href="/verify"
+            passHref
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <Button
+              startIcon={<ArrowBackIcon />}
+              sx={{ fontWeight: 700, textTransform: "none" }}
+            >
               Verifier
             </Button>
           </Link>
@@ -101,7 +108,9 @@ function VerifyTxContent({ txSignature }: { txSignature: string }) {
 
   if (!data) return null;
 
-  const isLocalhost = process.env.NEXT_PUBLIC_SOLANA_RPC?.includes("localhost") || process.env.NEXT_PUBLIC_SOLANA_RPC?.includes("127.0.0.1");
+  const isLocalhost =
+    process.env.NEXT_PUBLIC_SOLANA_RPC?.includes("localhost") ||
+    process.env.NEXT_PUBLIC_SOLANA_RPC?.includes("127.0.0.1");
   const explorerUrl = isLocalhost
     ? `https://explorer.solana.com/tx/${txSignature}?cluster=custom&customUrl=http%3A%2F%2Flocalhost%3A8899`
     : `https://explorer.solana.com/tx/${txSignature}?cluster=devnet`;
@@ -110,15 +119,30 @@ function VerifyTxContent({ txSignature }: { txSignature: string }) {
     <Container maxWidth="md" sx={{ py: 8 }}>
       {/* Back button */}
       <Box sx={{ mb: 4 }}>
-        <Link href="/verify" passHref style={{ textDecoration: "none", color: "inherit" }}>
-          <Button startIcon={<ArrowBackIcon />} sx={{ fontWeight: 700, textTransform: "none" }}>
+        <Link
+          href="/verify"
+          passHref
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          <Button
+            startIcon={<ArrowBackIcon />}
+            sx={{ fontWeight: 700, textTransform: "none" }}
+          >
             Verifier
           </Button>
         </Link>
       </Box>
 
       {/* Main Verification Card */}
-      <Card variant="outlined" sx={{ borderRadius: 4, borderColor: "divider", mb: 4, overflow: "hidden" }}>
+      <Card
+        variant="outlined"
+        sx={{
+          borderRadius: 4,
+          borderColor: "divider",
+          mb: 4,
+          overflow: "hidden",
+        }}
+      >
         <Box
           sx={{
             p: 4,
@@ -131,27 +155,42 @@ function VerifyTxContent({ txSignature }: { txSignature: string }) {
               data.type === "donate"
                 ? "rgba(0, 240, 181, 0.04)"
                 : data.type === "submit_proof"
-                ? "rgba(0, 150, 255, 0.04)"
-                : "rgba(95, 60, 254, 0.04)",
+                  ? "rgba(0, 150, 255, 0.04)"
+                  : "rgba(95, 60, 254, 0.04)",
             color:
               data.type === "donate"
                 ? "#00b084"
                 : data.type === "submit_proof"
-                ? "#007BFF"
-                : "primary.main",
+                  ? "#007BFF"
+                  : "primary.main",
           }}
         >
           <CheckCircleIcon sx={{ fontSize: 36 }} />
           <Box>
-            <Typography variant="h5" sx={{ fontWeight: 900, fontFamily: "var(--font-plus-jakarta-sans)" }}>
+            <Typography
+              variant="h5"
+              sx={{
+                fontWeight: 900,
+                fontFamily: "var(--font-plus-jakarta-sans)",
+              }}
+            >
               {data.type === "donate" && t("statusDonate")}
               {data.type === "create_campaign" && t("statusCreateCampaign")}
               {data.type === "create_milestone" && t("statusCreateMilestone")}
               {data.type === "submit_proof" && t("statusSubmitProof")}
-              {data.type === "request_disbursement" && t("statusRequestDisbursement")}
+              {data.type === "request_disbursement" &&
+                t("statusRequestDisbursement")}
               {data.type === "close_campaign" && t("statusCloseCampaign")}
             </Typography>
-            <Typography variant="caption" sx={{ fontFamily: "monospace", display: "block", color: "text.secondary", mt: 0.5 }}>
+            <Typography
+              variant="caption"
+              sx={{
+                fontFamily: "monospace",
+                display: "block",
+                color: "text.secondary",
+                mt: 0.5,
+              }}
+            >
               Sig: {txSignature.slice(0, 12)}...{txSignature.slice(-12)}
             </Typography>
           </Box>
@@ -162,8 +201,16 @@ function VerifyTxContent({ txSignature }: { txSignature: string }) {
           <Stack spacing={3}>
             {data.type === "donate" && (
               <>
-                <DetailRow label={t("donor")} value={data.donor || ""} isAddress />
-                <DetailRow label={t("campaign")} value={data.campaign || ""} isAddress />
+                <DetailRow
+                  label={t("donor")}
+                  value={data.donor || ""}
+                  isAddress
+                />
+                <DetailRow
+                  label={t("campaign")}
+                  value={data.campaign || ""}
+                  isAddress
+                />
                 <DetailRow
                   label={t("amount")}
                   value={`${(parseFloat(data.amount || "0") / LAMPORTS_PER_SOL).toLocaleString()} SOL`}
@@ -174,8 +221,16 @@ function VerifyTxContent({ txSignature }: { txSignature: string }) {
 
             {data.type === "create_campaign" && (
               <>
-                <DetailRow label={t("creator")} value={data.creator || ""} isAddress />
-                <DetailRow label={t("campaign")} value={data.campaign || ""} isAddress />
+                <DetailRow
+                  label={t("creator")}
+                  value={data.creator || ""}
+                  isAddress
+                />
+                <DetailRow
+                  label={t("campaign")}
+                  value={data.campaign || ""}
+                  isAddress
+                />
                 <DetailRow label="Title" value={data.title || ""} />
                 <DetailRow label="Description" value={data.description || ""} />
                 <DetailRow label="Category" value={data.category || ""} />
@@ -184,17 +239,40 @@ function VerifyTxContent({ txSignature }: { txSignature: string }) {
                   value={`${(parseFloat(data.amount || "0") / LAMPORTS_PER_SOL).toLocaleString()} SOL`}
                   isAmount
                 />
-                <DetailRow label="Milestone Count" value={String(data.milestoneCount || 0)} />
-                <DetailRow label="Deadline" value={new Date(parseInt(data.deadline || "0") * 1000).toLocaleDateString()} />
+                <DetailRow
+                  label="Milestone Count"
+                  value={String(data.milestoneCount || 0)}
+                />
+                <DetailRow
+                  label="Deadline"
+                  value={new Date(
+                    parseInt(data.deadline || "0") * 1000,
+                  ).toLocaleDateString()}
+                />
               </>
             )}
 
             {data.type === "create_milestone" && (
               <>
-                <DetailRow label={t("creator")} value={data.creator || ""} isAddress />
-                <DetailRow label={t("campaign")} value={data.campaign || ""} isAddress />
-                <DetailRow label={t("milestone")} value={data.milestone || ""} isAddress />
-                <DetailRow label="Milestone Index" value={String((data.milestoneIndex ?? 0) + 1)} />
+                <DetailRow
+                  label={t("creator")}
+                  value={data.creator || ""}
+                  isAddress
+                />
+                <DetailRow
+                  label={t("campaign")}
+                  value={data.campaign || ""}
+                  isAddress
+                />
+                <DetailRow
+                  label={t("milestone")}
+                  value={data.milestone || ""}
+                  isAddress
+                />
+                <DetailRow
+                  label="Milestone Index"
+                  value={String((data.milestoneIndex ?? 0) + 1)}
+                />
                 <DetailRow label="Milestone Title" value={data.title || ""} />
                 <DetailRow
                   label="Allocated Amount"
@@ -206,11 +284,26 @@ function VerifyTxContent({ txSignature }: { txSignature: string }) {
 
             {data.type === "submit_proof" && (
               <>
-                <DetailRow label={t("creator")} value={data.creator || ""} isAddress />
-                <DetailRow label={t("campaign")} value={data.campaign || ""} isAddress />
-                <DetailRow label={t("milestone")} value={`Milestone #${(data.milestoneIndex ?? 0) + 1} ${data.milestoneTitle ? `(${data.milestoneTitle})` : ""}`} />
+                <DetailRow
+                  label={t("creator")}
+                  value={data.creator || ""}
+                  isAddress
+                />
+                <DetailRow
+                  label={t("campaign")}
+                  value={data.campaign || ""}
+                  isAddress
+                />
+                <DetailRow
+                  label={t("milestone")}
+                  value={`Milestone #${(data.milestoneIndex ?? 0) + 1} ${data.milestoneTitle ? `(${data.milestoneTitle})` : ""}`}
+                />
                 <Box>
-                  <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700, display: "block", mb: 1 }}>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    sx={{ fontWeight: 700, display: "block", mb: 1 }}
+                  >
                     {t("proofUri")}
                   </Typography>
                   {data.proofUri && (
@@ -218,10 +311,17 @@ function VerifyTxContent({ txSignature }: { txSignature: string }) {
                       variant="outlined"
                       color="primary"
                       startIcon={<InsertDriveFileIcon />}
-                      href={data.proofUri.replace("ipfs://", "https://gateway.pinata.cloud/ipfs/")}
+                      href={data.proofUri.replace(
+                        "ipfs://",
+                        "https://gateway.pinata.cloud/ipfs/",
+                      )}
                       target="_blank"
                       rel="noopener"
-                      sx={{ textTransform: "none", borderRadius: 2, fontWeight: 700 }}
+                      sx={{
+                        textTransform: "none",
+                        borderRadius: 2,
+                        fontWeight: 700,
+                      }}
                     >
                       {t("viewProof")}
                     </Button>
@@ -232,28 +332,54 @@ function VerifyTxContent({ txSignature }: { txSignature: string }) {
 
             {data.type === "request_disbursement" && (
               <>
-                <DetailRow label={t("creator")} value={data.creator || ""} isAddress />
-                <DetailRow label={t("campaign")} value={data.campaign || ""} isAddress />
-                <DetailRow label={t("milestone")} value={`Milestone #${(data.milestoneIndex ?? 0) + 1} ${data.milestoneTitle ? `(${data.milestoneTitle})` : ""}`} />
+                <DetailRow
+                  label={t("creator")}
+                  value={data.creator || ""}
+                  isAddress
+                />
+                <DetailRow
+                  label={t("campaign")}
+                  value={data.campaign || ""}
+                  isAddress
+                />
+                <DetailRow
+                  label={t("milestone")}
+                  value={`Milestone #${(data.milestoneIndex ?? 0) + 1} ${data.milestoneTitle ? `(${data.milestoneTitle})` : ""}`}
+                />
                 <DetailRow
                   label="Funds Released"
                   value={`${(parseFloat(data.amount || "0") / LAMPORTS_PER_SOL).toLocaleString()} SOL`}
                   isAmount
                 />
-                <DetailRow label={t("recipient")} value={data.creator || ""} isAddress />
+                <DetailRow
+                  label={t("recipient")}
+                  value={data.creator || ""}
+                  isAddress
+                />
               </>
             )}
 
             {data.type === "close_campaign" && (
               <>
-                <DetailRow label={t("creator")} value={data.creator || ""} isAddress />
-                <DetailRow label={t("campaign")} value={data.campaign || ""} isAddress />
+                <DetailRow
+                  label={t("creator")}
+                  value={data.creator || ""}
+                  isAddress
+                />
+                <DetailRow
+                  label={t("campaign")}
+                  value={data.campaign || ""}
+                  isAddress
+                />
                 <Alert
                   severity="info"
                   icon={<InfoIcon />}
                   sx={{ borderRadius: 2, p: 2, mt: 2 }}
                 >
-                  <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 0.5 }}>
+                  <Typography
+                    variant="subtitle2"
+                    sx={{ fontWeight: 700, mb: 0.5 }}
+                  >
                     {t("closedLabel")}
                   </Typography>
                   <Typography variant="body2">{t("closedDesc")}</Typography>
@@ -269,13 +395,21 @@ function VerifyTxContent({ txSignature }: { txSignature: string }) {
             </Typography>
             <Grid container spacing={2}>
               <Grid size={{ xs: 6 }}>
-                <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700 }}>
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{ fontWeight: 700 }}
+                >
                   {t("slot")}
                 </Typography>
                 <Typography variant="body2">{data.slot}</Typography>
               </Grid>
               <Grid size={{ xs: 6 }}>
-                <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700 }}>
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{ fontWeight: 700 }}
+                >
                   {t("timestamp")}
                 </Typography>
                 <Typography variant="body2">
@@ -283,7 +417,11 @@ function VerifyTxContent({ txSignature }: { txSignature: string }) {
                 </Typography>
               </Grid>
               <Grid size={{ xs: 6 }}>
-                <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700 }}>
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{ fontWeight: 700 }}
+                >
                   {t("fee")}
                 </Typography>
                 <Typography variant="body2">
@@ -291,22 +429,40 @@ function VerifyTxContent({ txSignature }: { txSignature: string }) {
                 </Typography>
               </Grid>
               <Grid size={{ xs: 6 }}>
-                <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700 }}>
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{ fontWeight: 700 }}
+                >
                   {t("status")}
                 </Typography>
-                <Typography variant="body2" color="success.main" sx={{ fontWeight: 700 }}>
+                <Typography
+                  variant="body2"
+                  color="success.main"
+                  sx={{ fontWeight: 700 }}
+                >
                   {t("finalized")}
                 </Typography>
               </Grid>
             </Grid>
 
             {/* Actions */}
-            <Stack direction={{ xs: "column", sm: "row" }} spacing={2} sx={{ mt: 2 }}>
+            <Stack
+              direction={{ xs: "column", sm: "row" }}
+              spacing={2}
+              sx={{ mt: 2 }}
+            >
               <Button
                 variant="contained"
                 startIcon={<ContentCopyIcon />}
                 onClick={handleCopyLink}
-                sx={{ borderRadius: 2, py: 1.2, fontWeight: 700, textTransform: "none", flexGrow: 1 }}
+                sx={{
+                  borderRadius: 2,
+                  py: 1.2,
+                  fontWeight: 700,
+                  textTransform: "none",
+                  flexGrow: 1,
+                }}
               >
                 {t("copyLink")}
               </Button>
@@ -334,7 +490,10 @@ function VerifyTxContent({ txSignature }: { txSignature: string }) {
       </Card>
 
       {/* Raw Data Toggle */}
-      <Accordion variant="outlined" sx={{ borderRadius: 4, borderColor: "divider", overflow: "hidden" }}>
+      <Accordion
+        variant="outlined"
+        sx={{ borderRadius: 4, borderColor: "divider", overflow: "hidden" }}
+      >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Box>
             <Typography variant="subtitle2" sx={{ fontWeight: 800 }}>
@@ -387,7 +546,11 @@ function DetailRow({
 }) {
   return (
     <Box>
-      <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 700, display: "block", mb: 0.5 }}>
+      <Typography
+        variant="caption"
+        color="text.secondary"
+        sx={{ fontWeight: 700, display: "block", mb: 0.5 }}
+      >
         {label}
       </Typography>
       {isAddress ? (

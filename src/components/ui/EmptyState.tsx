@@ -10,7 +10,12 @@ interface EmptyStateProps {
   actionPath?: string;
 }
 
-export default function EmptyState({ title, description, actionLabel, actionPath }: EmptyStateProps) {
+export default function EmptyState({
+  title,
+  description,
+  actionLabel,
+  actionPath,
+}: EmptyStateProps) {
   return (
     <Box
       sx={{

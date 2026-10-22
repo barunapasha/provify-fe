@@ -88,7 +88,10 @@ interface SilkPlaneProps {
   uniforms: SilkUniforms;
 }
 
-const SilkPlane = forwardRef<Mesh, SilkPlaneProps>(function SilkPlane({ uniforms }, ref) {
+const SilkPlane = forwardRef<Mesh, SilkPlaneProps>(function SilkPlane(
+  { uniforms },
+  ref,
+) {
   const { viewport } = useThree();
 
   useLayoutEffect(() => {
@@ -111,7 +114,11 @@ const SilkPlane = forwardRef<Mesh, SilkPlaneProps>(function SilkPlane({ uniforms
   return (
     <mesh ref={ref}>
       <planeGeometry args={[1, 1, 1, 1]} />
-      <shaderMaterial uniforms={uniforms} vertexShader={vertexShader} fragmentShader={fragmentShader} />
+      <shaderMaterial
+        uniforms={uniforms}
+        vertexShader={vertexShader}
+        fragmentShader={fragmentShader}
+      />
     </mesh>
   );
 });
@@ -125,7 +132,13 @@ export interface SilkProps {
   rotation?: number;
 }
 
-const Silk: React.FC<SilkProps> = ({ speed = 5, scale = 0.7, color = "#545357", noiseIntensity = 1.5, rotation = 0 }) => {
+const Silk: React.FC<SilkProps> = ({
+  speed = 5,
+  scale = 0.7,
+  color = "#545357",
+  noiseIntensity = 1.5,
+  rotation = 0,
+}) => {
   const meshRef = useRef<Mesh>(null);
 
   const uniforms = useMemo<SilkUniforms>(
@@ -135,9 +148,9 @@ const Silk: React.FC<SilkProps> = ({ speed = 5, scale = 0.7, color = "#545357", 
       uNoiseIntensity: { value: noiseIntensity },
       uColor: { value: new Color(...hexToNormalizedRGB(color)) },
       uRotation: { value: rotation },
-      uTime: { value: 0 }
+      uTime: { value: 0 },
     }),
-    [speed, scale, noiseIntensity, color, rotation]
+    [speed, scale, noiseIntensity, color, rotation],
   );
 
   return (

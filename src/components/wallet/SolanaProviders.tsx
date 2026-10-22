@@ -18,9 +18,8 @@ export default function SolanaProviders({
   children: React.ReactNode;
 }) {
   const endpoint = useMemo(
-    () =>
-      process.env.NEXT_PUBLIC_SOLANA_RPC ?? clusterApiUrl("devnet"),
-    []
+    () => process.env.NEXT_PUBLIC_SOLANA_RPC ?? clusterApiUrl("devnet"),
+    [],
   );
 
   const wallets = useMemo(() => [new PhantomWalletAdapter()], []);

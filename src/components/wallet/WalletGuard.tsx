@@ -5,7 +5,11 @@ import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import { Box, Button, Container, Typography } from "@mui/material";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 
-export default function WalletGuard({ children }: { children: React.ReactNode }) {
+export default function WalletGuard({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const { connected } = useWallet();
   const { setVisible } = useWalletModal();
 
@@ -41,7 +45,8 @@ export default function WalletGuard({ children }: { children: React.ReactNode })
               Wallet Connection Required
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              This action requires cryptographic signature. Connect your wallet to proceed.
+              This action requires cryptographic signature. Connect your wallet
+              to proceed.
             </Typography>
           </Box>
           <Button

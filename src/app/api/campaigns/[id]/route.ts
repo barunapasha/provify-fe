@@ -5,14 +5,15 @@ import { BorshAccountsCoder } from "@coral-xyz/anchor";
 import { IDL } from "@/idl/provify_contract";
 
 const PROGRAM_ID = new PublicKey(
-  process.env.NEXT_PUBLIC_PROGRAM_ID ?? "7px9KgeAgyrx8juwhcHfhzRc6fbkMT1gdMUtQpaDue7W"
+  process.env.NEXT_PUBLIC_PROGRAM_ID ??
+    "7px9KgeAgyrx8juwhcHfhzRc6fbkMT1gdMUtQpaDue7W",
 );
 
 const coder = new BorshAccountsCoder(IDL as never);
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const { id } = await params;
@@ -23,7 +24,7 @@ export async function GET(
     } catch {
       return NextResponse.json(
         { error: "Invalid campaign public key" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -32,7 +33,7 @@ export async function GET(
     if (!accountInfo) {
       return NextResponse.json(
         { error: "Campaign not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -43,32 +44,30 @@ export async function GET(
       console.error("Failed to deserialize campaign:", err);
       return NextResponse.json(
         { error: "Failed to deserialize campaign data" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
     if (!campaignData) {
       return NextResponse.json(
         { error: "Failed to deserialize campaign data" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
-    const milestoneCount = campaignData.milestoneCount;
+    // decoded Anchor data uses snake_case (Rust field names)
+    const milestoneCount = campaignData.milestone_count;
     const milestonePdas: PublicKey[] = [];
     for (let i = 0; i < milestoneCount; i++) {
       const [pda] = PublicKey.findProgramAddressSync(
-        [
-          Buffer.from("milestone"),
-          campaignPubkey.toBuffer(),
-          Buffer.from([i]),
-        ],
-        PROGRAM_ID
+        [Buffer.from("milestone"), campaignPubkey.toBuffer(), Buffer.from([i])],
+        PROGRAM_ID,
       );
       milestonePdas.push(pda);
     }
 
-    const milestoneInfos = await connection.getMultipleAccountsInfo(milestonePdas);
+    const milestoneInfos =
+      await connection.getMultipleAccountsInfo(milestonePdas);
     const milestones = milestoneInfos
       .map((info, idx) => {
         if (!info) return null;
@@ -87,7 +86,10 @@ export async function GET(
             bump: mData.bump,
           };
         } catch (err) {
-          console.error(`Failed to deserialize milestone at index ${idx}:`, err);
+          console.error(
+            `Failed to deserialize milestone at index ${idx}:`,
+            err,
+          );
           return null;
         }
       })
@@ -115,7 +117,7 @@ export async function GET(
     console.error("Error fetching campaign:", error);
     return NextResponse.json(
       { error: "Failed to fetch campaign" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

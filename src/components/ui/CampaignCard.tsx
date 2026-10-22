@@ -1,10 +1,17 @@
 "use client";
 
-import { Card, CardContent, CardMedia, Typography, Box, Chip } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  Box,
+  Chip,
+} from "@mui/material";
 import { Link } from "@/i18n/routing";
 import ProgressBar from "./ProgressBar";
 import StatusBadge from "./StatusBadge";
-import { Campaign } from "@/types/campaign";
+import { Campaign, effectiveCampaignStatus } from "@/types/campaign";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 
 interface CampaignCardProps {
@@ -15,10 +22,19 @@ export default function CampaignCard({ campaign }: CampaignCardProps) {
   const current = parseFloat(campaign.currentAmount) / LAMPORTS_PER_SOL;
   const target = parseFloat(campaign.targetAmount) / LAMPORTS_PER_SOL;
   const deadlineDate = new Date(parseInt(campaign.deadline) * 1000);
-  const daysLeft = Math.max(0, Math.ceil((deadlineDate.getTime() - Date.now()) / (1000 * 3600 * 24)));
+  const daysLeft = Math.max(
+    0,
+    Math.ceil((deadlineDate.getTime() - Date.now()) / (1000 * 3600 * 24)),
+  );
+  // On-chain status is lazy; derive effective status for display
+  const effectiveStatus = effectiveCampaignStatus(campaign);
 
   return (
-    <Link href={`/campaigns/${campaign.pubkey}`} passHref style={{ textDecoration: "none" }}>
+    <Link
+      href={`/campaigns/${campaign.pubkey}`}
+      passHref
+      style={{ textDecoration: "none" }}
+    >
       <Card
         sx={{
           height: "100%",
@@ -39,12 +55,30 @@ export default function CampaignCard({ campaign }: CampaignCardProps) {
         <CardMedia
           component="img"
           height="180"
-          image={campaign.imageUri.replace("ipfs://", "https://gateway.pinata.cloud/ipfs/") || "/placeholder.jpg"}
+          image={
+            campaign.imageUri.replace(
+              "ipfs://",
+              "https://gateway.pinata.cloud/ipfs/",
+            ) || "/placeholder.jpg"
+          }
           alt={campaign.title}
-          sx={{ borderTopLeftRadius: 4, borderTopRightRadius: 4, objectFit: "cover" }}
+          sx={{
+            borderTopLeftRadius: 4,
+            borderTopRightRadius: 4,
+            objectFit: "cover",
+          }}
         />
-        <CardContent sx={{ flexGrow: 1, display: "flex", flexDirection: "column", p: 3 }}>
-          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
+        <CardContent
+          sx={{ flexGrow: 1, display: "flex", flexDirection: "column", p: 3 }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              mb: 2,
+            }}
+          >
             <Chip
               label={campaign.category}
               size="small"
@@ -56,7 +90,7 @@ export default function CampaignCard({ campaign }: CampaignCardProps) {
                 color: "text.primary",
               }}
             />
-            <StatusBadge status={campaign.status} />
+            <StatusBadge status={{ [effectiveStatus]: {} }} />
           </Box>
 
           <Typography
@@ -95,7 +129,9 @@ export default function CampaignCard({ campaign }: CampaignCardProps) {
 
           <Box sx={{ mt: "auto" }}>
             <ProgressBar current={current} target={target} />
-            <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
+            <Box
+              sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}
+            >
               <Typography variant="caption" color="text.secondary">
                 Donors: <strong>{campaign.donationCount}</strong>
               </Typography>

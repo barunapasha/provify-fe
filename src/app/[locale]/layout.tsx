@@ -44,7 +44,13 @@ export default async function RootLayout({
         <NextIntlClientProvider messages={messages}>
           <ThemeRegistry>
             <SolanaProviders>
-              <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  minHeight: "100vh",
+                }}
+              >
                 <Navbar />
                 <Box component="main" sx={{ flexGrow: 1 }}>
                   {children}
