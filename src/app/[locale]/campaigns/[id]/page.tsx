@@ -30,7 +30,11 @@ import TxBadge from "@/components/ui/TxBadge";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import EmptyState from "@/components/ui/EmptyState";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
-import { isCampaignDonatable, effectiveCampaignStatus } from "@/types/campaign";
+import {
+  isCampaignDonatable,
+  effectiveCampaignStatus,
+  campaignStatusLiteral,
+} from "@/types/campaign";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import LaunchIcon from "@mui/icons-material/Launch";
@@ -158,7 +162,9 @@ export default function CampaignDetailPage({
                 }}
               />
               <StatusBadge
-                status={{ [effectiveCampaignStatus(campaign)]: {} }}
+                status={campaignStatusLiteral(
+                  effectiveCampaignStatus(campaign),
+                )}
               />
             </Box>
             <Typography
