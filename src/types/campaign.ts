@@ -82,3 +82,12 @@ export function isCampaignDonatable(
 ): boolean {
   return effectiveCampaignStatus(campaign) === "Active";
 }
+
+/** Convert an effective status string to the literal CampaignStatus shape. */
+export function campaignStatusLiteral(
+  status: "Active" | "Completed" | "Closed",
+): CampaignStatus {
+  if (status === "Completed") return { completed: {} };
+  if (status === "Closed") return { closed: {} };
+  return { active: {} };
+}

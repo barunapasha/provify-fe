@@ -27,7 +27,10 @@ import { useCreatorCampaigns } from "@/hooks/useCreatorCampaigns";
 import EmptyState from "@/components/ui/EmptyState";
 import ProgressBar from "@/components/ui/ProgressBar";
 import StatusBadge from "@/components/ui/StatusBadge";
-import { effectiveCampaignStatus } from "@/types/campaign";
+import {
+  effectiveCampaignStatus,
+  campaignStatusLiteral,
+} from "@/types/campaign";
 
 export default function CreatorDashboardPage() {
   return (
@@ -293,9 +296,9 @@ function DashboardContent() {
                         sx={{ fontWeight: 700, borderRadius: 1 }}
                       />
                       <StatusBadge
-                        status={{
-                          [effectiveCampaignStatus(campaign)]: {},
-                        }}
+                        status={campaignStatusLiteral(
+                          effectiveCampaignStatus(campaign),
+                        )}
                       />
                     </Box>
 

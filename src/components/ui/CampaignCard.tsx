@@ -11,7 +11,11 @@ import {
 import { Link } from "@/i18n/routing";
 import ProgressBar from "./ProgressBar";
 import StatusBadge from "./StatusBadge";
-import { Campaign, effectiveCampaignStatus } from "@/types/campaign";
+import {
+  Campaign,
+  effectiveCampaignStatus,
+  campaignStatusLiteral,
+} from "@/types/campaign";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 
 interface CampaignCardProps {
@@ -90,7 +94,7 @@ export default function CampaignCard({ campaign }: CampaignCardProps) {
                 color: "text.primary",
               }}
             />
-            <StatusBadge status={{ [effectiveStatus]: {} }} />
+            <StatusBadge status={campaignStatusLiteral(effectiveStatus)} />
           </Box>
 
           <Typography
